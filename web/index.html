@@ -16,6 +16,27 @@
 
   <title>portfolio_website</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCXuIQK8VVxKEzOV7QBJX5oax11NMCux84",
+      authDomain: "portfoliowebsiteflutter.firebaseapp.com",
+      databaseURL: "https://portfoliowebsiteflutter.firebaseio.com",
+      projectId: "portfoliowebsiteflutter",
+      storageBucket: "portfoliowebsiteflutter.appspot.com",
+      messagingSenderId: "320894045226",
+      appId: "1:320894045226:web:da3a9a419e7303979b8753",
+      measurementId: "G-GKJ6Z1Y99B"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
@@ -28,6 +49,7 @@
       });
     }
   </script>
+  <script defer src="sql-wasm.js"></script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
