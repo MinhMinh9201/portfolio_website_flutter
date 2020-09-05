@@ -1,12 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/theme_switcher.dart';
-import 'package:portfolio_website/resource/api/dio_provider.dart';
+import 'package:portfolio_website/resource/database/app_database.dart';
+import 'package:portfolio_website/resource/database/dao/blog_dao.dart';
+import 'package:portfolio_website/resource/database/dao/dao.dart';
 import 'package:portfolio_website/resource/repo/blog_repository.dart';
+import 'package:portfolio_website/resource/repo/project_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,15 +30,21 @@ class PortfolioWebsite extends StatefulWidget {
   _PortfolioWebsiteState createState() => _PortfolioWebsiteState();
 
   static Widget runWidget() {
-    Dio dio = DioProvider.instance();
-
-    final BlogRepository blogRepository = BlogRepository(dio: dio);
+    final AppDatabase database = AppDatabase();
+    final BlogDao blogDao = BlogDao(database);
+    final ProjectDao projectDao = ProjectDao(database);
+    final BlogRepository blogRepository = BlogRepository(dao: blogDao);
+    final ProjectRepository projectRepository =
+        ProjectRepository(dao: projectDao);
 
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<BlogRepository>(
             create: (context) => blogRepository,
-          )
+          ),
+          RepositoryProvider<ProjectRepository>(
+            create: (context) => projectRepository,
+          ),
         ],
         child: MultiBlocProvider(
           providers: [

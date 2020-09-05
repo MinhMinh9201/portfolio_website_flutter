@@ -1,12 +1,14 @@
-import 'package:dio/dio.dart';
-import 'package:portfolio_website/resource/api/rest_client.dart';
+import 'package:portfolio_website/resource/database/database.dart';
 
 class BlogRepository {
-  final Dio dio;
-  const BlogRepository({this.dio});
+  final BlogDao dao;
+  const BlogRepository({this.dao});
 
-  Future<dynamic> blogMedium() async {
-    final client = RestClient(dio);
-    return client.blogsMedium();
-  }
+  Future<List<Blog>> getAll() => dao.getAll();
+
+  Future insertBlog(Blog blog) => dao.insertBlog(blog);
+
+  Future updateBlog(Blog blog) => dao.updateBlog(blog);
+
+  Future deleteBlog(Blog blog) => dao.deleteBlog(blog);
 }

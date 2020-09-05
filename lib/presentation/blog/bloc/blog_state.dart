@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:portfolio_website/resource/database/app_database.dart';
 
 abstract class BlogState extends Equatable {
   const BlogState();
@@ -9,7 +10,7 @@ abstract class BlogState extends Equatable {
 class BlogLoading extends BlogState {}
 
 class BlogLoaded extends BlogState {
-  final String content;
+  final List<Blog> content;
   BlogLoaded({this.content});
   @override
   List<Object> get props => [content];
