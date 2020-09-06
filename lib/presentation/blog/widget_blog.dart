@@ -10,7 +10,10 @@ class WidgetBlog extends StatelessWidget {
   final bool isBottom;
 
   const WidgetBlog(
-      {@required this.blog, this.action, this.isTop, this.isBottom});
+      {@required this.blog,
+      this.action,
+      this.isTop = false,
+      this.isBottom = false});
 
   @override
   Widget build(BuildContext context) {

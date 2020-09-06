@@ -1,4 +1,5 @@
 import 'package:moor/moor_web.dart';
+import 'package:moor/moor.dart';
 import 'database.dart';
 
 part 'app_database.g.dart';

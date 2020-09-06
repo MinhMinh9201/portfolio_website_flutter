@@ -1,5 +1,4 @@
-import 'package:moor/moor_web.dart';
-
+import 'package:moor/moor.dart';
 import '../database.dart';
 
 part 'project_dao.g.dart';
@@ -17,7 +16,7 @@ class ProjectDao extends DatabaseAccessor<AppDatabase> with _$ProjectDaoMixin {
       .get();
 
   Future insertProject(Project project) =>
-      into(projects).insert(project, orReplace: true);
+      into(projects).insert(project, mode: InsertMode.insertOrReplace);
 
   Future updateProject(Project project) => update(projects).replace(project);
 

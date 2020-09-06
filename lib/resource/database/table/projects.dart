@@ -1,4 +1,4 @@
-import 'package:moor/moor_web.dart';
+import 'package:moor/moor.dart';
 
 class Projects extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -14,7 +14,4 @@ class Projects extends Table {
   TextColumn get url => text()();
 
   DateTimeColumn get createTime => dateTime().nullable()();
-
-  @override
-  Set<Column> get primaryKey => {id};
 }

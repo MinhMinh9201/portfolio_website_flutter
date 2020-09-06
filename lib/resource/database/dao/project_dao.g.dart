@@ -7,5 +7,5 @@ part of 'project_dao.dart';
 // **************************************************************************
 
 mixin _$ProjectDaoMixin on DatabaseAccessor<AppDatabase> {
-  $ProjectsTable get projects => db.projects;
+  $ProjectsTable get projects => attachedDatabase.projects;
 }

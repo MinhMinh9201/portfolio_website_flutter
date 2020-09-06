@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
+import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/theme_switcher.dart';
 import 'package:portfolio_website/resource/database/app_database.dart';
 import 'package:portfolio_website/resource/database/dao/blog_dao.dart';
@@ -50,7 +51,10 @@ class PortfolioWebsite extends StatefulWidget {
           providers: [
             BlocProvider(
               create: (context) => BlogBloc(repository: blogRepository),
-            )
+            ),
+            BlocProvider(
+              create: (context) => ProjectsBloc(repository: projectRepository),
+            ),
           ],
           child: PortfolioWebsite(),
         ));

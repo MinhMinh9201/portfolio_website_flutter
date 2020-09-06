@@ -7,5 +7,5 @@ part of 'blog_dao.dart';
 // **************************************************************************
 
 mixin _$BlogDaoMixin on DatabaseAccessor<AppDatabase> {
-  $BlogsTable get blogs => db.blogs;
+  $BlogsTable get blogs => attachedDatabase.blogs;
 }

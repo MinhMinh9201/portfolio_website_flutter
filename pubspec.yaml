@@ -16,12 +16,13 @@ dependencies:
   # retrofit:
 
   #BloC
-  equatable:
-  flutter_bloc:
+  equatable: ^1.2.4
+  flutter_bloc: ^6.0.5
 
-  #Sqlite
+  #Sqlite - Local prefrences
   # moor_flutter: 
-  moor:
+  moor: ^3.3.1
+  shared_preferences: ^0.5.10
   
   #Other
   cached_network_image:

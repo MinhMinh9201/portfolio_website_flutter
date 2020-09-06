@@ -44,34 +44,34 @@ class Blog extends DataClass implements Insertable<Blog> {
           .mapFromDatabaseResponse(data['${effectivePrefix}create_time']),
     );
   }
-  factory Blog.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return Blog(
-      id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
-      description: serializer.fromJson<String>(json['description']),
-      image: serializer.fromJson<String>(json['image']),
-      isFromFirebase: serializer.fromJson<int>(json['isFromFirebase']),
-      url: serializer.fromJson<String>(json['url']),
-      createTime: serializer.fromJson<DateTime>(json['createTime']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
-      'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
-      'description': serializer.toJson<String>(description),
-      'image': serializer.toJson<String>(image),
-      'isFromFirebase': serializer.toJson<int>(isFromFirebase),
-      'url': serializer.toJson<String>(url),
-      'createTime': serializer.toJson<DateTime>(createTime),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || isFromFirebase != null) {
+      map['is_from_firebase'] = Variable<int>(isFromFirebase);
+    }
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
+    }
+    if (!nullToAbsent || createTime != null) {
+      map['create_time'] = Variable<DateTime>(createTime);
+    }
+    return map;
   }
 
-  @override
-  BlogsCompanion createCompanion(bool nullToAbsent) {
+  BlogsCompanion toCompanion(bool nullToAbsent) {
     return BlogsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title:
@@ -89,6 +89,33 @@ class Blog extends DataClass implements Insertable<Blog> {
           ? const Value.absent()
           : Value(createTime),
     );
+  }
+
+  factory Blog.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Blog(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      description: serializer.fromJson<String>(json['description']),
+      image: serializer.fromJson<String>(json['image']),
+      isFromFirebase: serializer.fromJson<int>(json['isFromFirebase']),
+      url: serializer.fromJson<String>(json['url']),
+      createTime: serializer.fromJson<DateTime>(json['createTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'description': serializer.toJson<String>(description),
+      'image': serializer.toJson<String>(image),
+      'isFromFirebase': serializer.toJson<int>(isFromFirebase),
+      'url': serializer.toJson<String>(url),
+      'createTime': serializer.toJson<DateTime>(createTime),
+    };
   }
 
   Blog copyWith(
@@ -134,7 +161,7 @@ class Blog extends DataClass implements Insertable<Blog> {
                   $mrjc(isFromFirebase.hashCode,
                       $mrjc(url.hashCode, createTime.hashCode)))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Blog &&
           other.id == this.id &&
@@ -168,14 +195,33 @@ class BlogsCompanion extends UpdateCompanion<Blog> {
     @required String title,
     @required String description,
     @required String image,
-    @required int isFromFirebase,
+    this.isFromFirebase = const Value.absent(),
     @required String url,
     this.createTime = const Value.absent(),
   })  : title = Value(title),
         description = Value(description),
         image = Value(image),
-        isFromFirebase = Value(isFromFirebase),
         url = Value(url);
+  static Insertable<Blog> custom({
+    Expression<int> id,
+    Expression<String> title,
+    Expression<String> description,
+    Expression<String> image,
+    Expression<int> isFromFirebase,
+    Expression<String> url,
+    Expression<DateTime> createTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (image != null) 'image': image,
+      if (isFromFirebase != null) 'is_from_firebase': isFromFirebase,
+      if (url != null) 'url': url,
+      if (createTime != null) 'create_time': createTime,
+    });
+  }
+
   BlogsCompanion copyWith(
       {Value<int> id,
       Value<String> title,
@@ -193,6 +239,47 @@ class BlogsCompanion extends UpdateCompanion<Blog> {
       url: url ?? this.url,
       createTime: createTime ?? this.createTime,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (isFromFirebase.present) {
+      map['is_from_firebase'] = Variable<int>(isFromFirebase.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (createTime.present) {
+      map['create_time'] = Variable<DateTime>(createTime.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BlogsCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('image: $image, ')
+          ..write('isFromFirebase: $isFromFirebase, ')
+          ..write('url: $url, ')
+          ..write('createTime: $createTime')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -258,7 +345,7 @@ class $BlogsTable extends Blogs with TableInfo<$BlogsTable, Blog> {
       'is_from_firebase',
       $tableName,
       false,
-    );
+    )..clientDefault = () => 1;
   }
 
   final VerificationMeta _urlMeta = const VerificationMeta('url');
@@ -296,50 +383,50 @@ class $BlogsTable extends Blogs with TableInfo<$BlogsTable, Blog> {
   @override
   final String actualTableName = 'blogs';
   @override
-  VerificationContext validateIntegrity(BlogsCompanion d,
+  VerificationContext validateIntegrity(Insertable<Blog> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.title.present) {
+    if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableValue(d.title.value, _titleMeta));
-    } else if (title.isRequired && isInserting) {
+          _titleMeta, title.isAcceptableOrUnknown(data['title'], _titleMeta));
+    } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (d.description.present) {
-      context.handle(_descriptionMeta,
-          description.isAcceptableValue(d.description.value, _descriptionMeta));
-    } else if (description.isRequired && isInserting) {
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description'], _descriptionMeta));
+    } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (d.image.present) {
+    if (data.containsKey('image')) {
       context.handle(
-          _imageMeta, image.isAcceptableValue(d.image.value, _imageMeta));
-    } else if (image.isRequired && isInserting) {
+          _imageMeta, image.isAcceptableOrUnknown(data['image'], _imageMeta));
+    } else if (isInserting) {
       context.missing(_imageMeta);
     }
-    if (d.isFromFirebase.present) {
+    if (data.containsKey('is_from_firebase')) {
       context.handle(
           _isFromFirebaseMeta,
-          isFromFirebase.isAcceptableValue(
-              d.isFromFirebase.value, _isFromFirebaseMeta));
-    } else if (isFromFirebase.isRequired && isInserting) {
-      context.missing(_isFromFirebaseMeta);
+          isFromFirebase.isAcceptableOrUnknown(
+              data['is_from_firebase'], _isFromFirebaseMeta));
     }
-    if (d.url.present) {
-      context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
-    } else if (url.isRequired && isInserting) {
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
+    } else if (isInserting) {
       context.missing(_urlMeta);
     }
-    if (d.createTime.present) {
-      context.handle(_createTimeMeta,
-          createTime.isAcceptableValue(d.createTime.value, _createTimeMeta));
-    } else if (createTime.isRequired && isInserting) {
-      context.missing(_createTimeMeta);
+    if (data.containsKey('create_time')) {
+      context.handle(
+          _createTimeMeta,
+          createTime.isAcceptableOrUnknown(
+              data['create_time'], _createTimeMeta));
     }
     return context;
   }
@@ -350,33 +437,6 @@ class $BlogsTable extends Blogs with TableInfo<$BlogsTable, Blog> {
   Blog map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return Blog.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(BlogsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.title.present) {
-      map['title'] = Variable<String, StringType>(d.title.value);
-    }
-    if (d.description.present) {
-      map['description'] = Variable<String, StringType>(d.description.value);
-    }
-    if (d.image.present) {
-      map['image'] = Variable<String, StringType>(d.image.value);
-    }
-    if (d.isFromFirebase.present) {
-      map['is_from_firebase'] = Variable<int, IntType>(d.isFromFirebase.value);
-    }
-    if (d.url.present) {
-      map['url'] = Variable<String, StringType>(d.url.value);
-    }
-    if (d.createTime.present) {
-      map['create_time'] = Variable<DateTime, DateTimeType>(d.createTime.value);
-    }
-    return map;
   }
 
   @override
@@ -421,34 +481,34 @@ class Project extends DataClass implements Insertable<Project> {
           .mapFromDatabaseResponse(data['${effectivePrefix}create_time']),
     );
   }
-  factory Project.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return Project(
-      id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
-      description: serializer.fromJson<String>(json['description']),
-      image: serializer.fromJson<String>(json['image']),
-      isFromFirebase: serializer.fromJson<int>(json['isFromFirebase']),
-      url: serializer.fromJson<String>(json['url']),
-      createTime: serializer.fromJson<DateTime>(json['createTime']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
-      'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
-      'description': serializer.toJson<String>(description),
-      'image': serializer.toJson<String>(image),
-      'isFromFirebase': serializer.toJson<int>(isFromFirebase),
-      'url': serializer.toJson<String>(url),
-      'createTime': serializer.toJson<DateTime>(createTime),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || isFromFirebase != null) {
+      map['is_from_firebase'] = Variable<int>(isFromFirebase);
+    }
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
+    }
+    if (!nullToAbsent || createTime != null) {
+      map['create_time'] = Variable<DateTime>(createTime);
+    }
+    return map;
   }
 
-  @override
-  ProjectsCompanion createCompanion(bool nullToAbsent) {
+  ProjectsCompanion toCompanion(bool nullToAbsent) {
     return ProjectsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
@@ -465,6 +525,33 @@ class Project extends DataClass implements Insertable<Project> {
           ? const Value.absent()
           : Value(createTime),
     );
+  }
+
+  factory Project.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Project(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
+      image: serializer.fromJson<String>(json['image']),
+      isFromFirebase: serializer.fromJson<int>(json['isFromFirebase']),
+      url: serializer.fromJson<String>(json['url']),
+      createTime: serializer.fromJson<DateTime>(json['createTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
+      'image': serializer.toJson<String>(image),
+      'isFromFirebase': serializer.toJson<int>(isFromFirebase),
+      'url': serializer.toJson<String>(url),
+      'createTime': serializer.toJson<DateTime>(createTime),
+    };
   }
 
   Project copyWith(
@@ -510,7 +597,7 @@ class Project extends DataClass implements Insertable<Project> {
                   $mrjc(isFromFirebase.hashCode,
                       $mrjc(url.hashCode, createTime.hashCode)))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Project &&
           other.id == this.id &&
@@ -544,14 +631,33 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     @required String name,
     @required String description,
     @required String image,
-    @required int isFromFirebase,
+    this.isFromFirebase = const Value.absent(),
     @required String url,
     this.createTime = const Value.absent(),
   })  : name = Value(name),
         description = Value(description),
         image = Value(image),
-        isFromFirebase = Value(isFromFirebase),
         url = Value(url);
+  static Insertable<Project> custom({
+    Expression<int> id,
+    Expression<String> name,
+    Expression<String> description,
+    Expression<String> image,
+    Expression<int> isFromFirebase,
+    Expression<String> url,
+    Expression<DateTime> createTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (image != null) 'image': image,
+      if (isFromFirebase != null) 'is_from_firebase': isFromFirebase,
+      if (url != null) 'url': url,
+      if (createTime != null) 'create_time': createTime,
+    });
+  }
+
   ProjectsCompanion copyWith(
       {Value<int> id,
       Value<String> name,
@@ -569,6 +675,47 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
       url: url ?? this.url,
       createTime: createTime ?? this.createTime,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (isFromFirebase.present) {
+      map['is_from_firebase'] = Variable<int>(isFromFirebase.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (createTime.present) {
+      map['create_time'] = Variable<DateTime>(createTime.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProjectsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('image: $image, ')
+          ..write('isFromFirebase: $isFromFirebase, ')
+          ..write('url: $url, ')
+          ..write('createTime: $createTime')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -634,7 +781,7 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
       'is_from_firebase',
       $tableName,
       false,
-    );
+    )..clientDefault = () => 1;
   }
 
   final VerificationMeta _urlMeta = const VerificationMeta('url');
@@ -672,50 +819,50 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   @override
   final String actualTableName = 'projects';
   @override
-  VerificationContext validateIntegrity(ProjectsCompanion d,
+  VerificationContext validateIntegrity(Insertable<Project> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.name.present) {
+    if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (name.isRequired && isInserting) {
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (d.description.present) {
-      context.handle(_descriptionMeta,
-          description.isAcceptableValue(d.description.value, _descriptionMeta));
-    } else if (description.isRequired && isInserting) {
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description'], _descriptionMeta));
+    } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (d.image.present) {
+    if (data.containsKey('image')) {
       context.handle(
-          _imageMeta, image.isAcceptableValue(d.image.value, _imageMeta));
-    } else if (image.isRequired && isInserting) {
+          _imageMeta, image.isAcceptableOrUnknown(data['image'], _imageMeta));
+    } else if (isInserting) {
       context.missing(_imageMeta);
     }
-    if (d.isFromFirebase.present) {
+    if (data.containsKey('is_from_firebase')) {
       context.handle(
           _isFromFirebaseMeta,
-          isFromFirebase.isAcceptableValue(
-              d.isFromFirebase.value, _isFromFirebaseMeta));
-    } else if (isFromFirebase.isRequired && isInserting) {
-      context.missing(_isFromFirebaseMeta);
+          isFromFirebase.isAcceptableOrUnknown(
+              data['is_from_firebase'], _isFromFirebaseMeta));
     }
-    if (d.url.present) {
-      context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
-    } else if (url.isRequired && isInserting) {
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
+    } else if (isInserting) {
       context.missing(_urlMeta);
     }
-    if (d.createTime.present) {
-      context.handle(_createTimeMeta,
-          createTime.isAcceptableValue(d.createTime.value, _createTimeMeta));
-    } else if (createTime.isRequired && isInserting) {
-      context.missing(_createTimeMeta);
+    if (data.containsKey('create_time')) {
+      context.handle(
+          _createTimeMeta,
+          createTime.isAcceptableOrUnknown(
+              data['create_time'], _createTimeMeta));
     }
     return context;
   }
@@ -726,33 +873,6 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   Project map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return Project.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(ProjectsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
-    }
-    if (d.description.present) {
-      map['description'] = Variable<String, StringType>(d.description.value);
-    }
-    if (d.image.present) {
-      map['image'] = Variable<String, StringType>(d.image.value);
-    }
-    if (d.isFromFirebase.present) {
-      map['is_from_firebase'] = Variable<int, IntType>(d.isFromFirebase.value);
-    }
-    if (d.url.present) {
-      map['url'] = Variable<String, StringType>(d.url.value);
-    }
-    if (d.createTime.present) {
-      map['create_time'] = Variable<DateTime, DateTimeType>(d.createTime.value);
-    }
-    return map;
   }
 
   @override
@@ -772,5 +892,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProjectDao _projectDao;
   ProjectDao get projectDao => _projectDao ??= ProjectDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [blogs, projects];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [blogs, projects];
 }

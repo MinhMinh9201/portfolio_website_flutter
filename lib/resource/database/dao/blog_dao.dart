@@ -1,5 +1,4 @@
-import 'package:moor/moor_web.dart';
-
+import 'package:moor/moor.dart';
 import '../database.dart';
 
 part 'blog_dao.g.dart';
@@ -16,7 +15,8 @@ class BlogDao extends DatabaseAccessor<AppDatabase> with _$BlogDaoMixin {
         ]))
       .get();
 
-  Future insertBlog(Blog blog) => into(blogs).insert(blog, orReplace: true);
+  Future insertBlog(Blog blog) =>
+      into(blogs).insert(blog, mode: InsertMode.insertOrReplace);
 
   Future updateBlog(Blog blog) => update(blogs).replace(blog);
 
