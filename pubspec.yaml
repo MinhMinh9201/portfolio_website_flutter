@@ -29,6 +29,7 @@ dependencies:
   firebase_auth: ^0.18.0+1
   
   #Other
+  neumorphic: ^0.4.0
   cached_network_image:
   shimmer:
   animations:
@@ -48,6 +49,9 @@ flutter:
     - assets/images/
 
   fonts:
+    - family: Shrikhand
+      fonts: 
+        - asset: assets/fonts/Shrikhand-Regular.ttf
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-MediumItalic.ttf

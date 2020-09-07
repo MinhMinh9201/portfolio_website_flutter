@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/auth/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
+import 'package:portfolio_website/presentation/navigation/sc_navigation.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/theme_switcher.dart';
@@ -82,7 +83,7 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
       theme: ThemeSwitcher.of(context).isLightMode
           ? lightTheme(context)
           : darkTheme(context),
-      home: HomeScreen(),
+      home: NavigationScreen(),
     );
   }
 }

@@ -62,19 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ]);
   }
 
-  Widget _buildAppBar() {
-    return AppBar(
-      actions: [
-        IconButton(
-            icon: ThemeSwitcher.of(context).isLightMode
-                ? Image.asset(
-                    AppImages.icMoon,
-                    height: 20,
-                    width: 20,
-                  )
-                : Icon(Icons.wb_sunny),
-            onPressed: () => ThemeSwitcher.of(context).switchMode())
-      ],
-    );
-  }
+  Widget _buildAppBar() => AppBar(
+        actions: [
+          IconButton(
+              icon: ThemeSwitcher.of(context).isLightMode
+                  ? Image.asset(
+                      AppImages.icMoon,
+                      height: 20,
+                      width: 20,
+                    )
+                  : Icon(Icons.wb_sunny),
+              onPressed: () => ThemeSwitcher.of(context).switchMode())
+        ],
+      );
 }

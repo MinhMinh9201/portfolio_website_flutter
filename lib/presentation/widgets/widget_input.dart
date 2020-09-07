@@ -10,6 +10,10 @@ class WidgetInput extends StatefulWidget {
   final bool autovalidate;
   final TextInputType inputType;
   final Widget endIcon;
+  final double height;
+  final TextStyle style;
+  final double radiusBorder;
+  final double elevation;
 
   WidgetInput(
       {this.inputController,
@@ -19,7 +23,11 @@ class WidgetInput extends StatefulWidget {
       this.inputType = TextInputType.text,
       this.obscureText = false,
       this.autovalidate = false,
-      this.endIcon});
+      this.endIcon,
+      this.elevation,
+      this.style,
+      this.radiusBorder,
+      this.height});
 
   @override
   _WidgetInputState createState() => _WidgetInputState();
@@ -30,10 +38,11 @@ class _WidgetInputState extends State<WidgetInput> {
   Widget build(BuildContext context) {
     return Container(
         child: Container(
-      height: AppValues.INPUT_FORM_HEIGHT,
+      height: widget.height ?? AppValues.INPUT_FORM_HEIGHT,
       child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: widget.elevation ?? 2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(widget.radiusBorder ?? 20)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Row(
@@ -46,7 +55,7 @@ class _WidgetInputState extends State<WidgetInput> {
                   },
                   autovalidate: widget.autovalidate ?? false,
                   validator: widget.validator,
-                  style: AppStyles.DEFAULT_MEDIUM,
+                  style: widget.style ?? AppStyles.DEFAULT_MEDIUM,
                   maxLines: 1,
                   keyboardType: widget.inputType ?? TextInputType.text,
                   textAlign: TextAlign.left,
