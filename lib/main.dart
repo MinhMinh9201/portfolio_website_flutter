@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
+import 'package:portfolio_website/presentation/auth/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
@@ -8,8 +10,11 @@ import 'package:portfolio_website/presentation/theme_switcher.dart';
 import 'package:portfolio_website/resource/database/app_database.dart';
 import 'package:portfolio_website/resource/database/dao/blog_dao.dart';
 import 'package:portfolio_website/resource/database/dao/dao.dart';
+import 'package:portfolio_website/resource/repo/auth_repository.dart';
 import 'package:portfolio_website/resource/repo/blog_repository.dart';
 import 'package:portfolio_website/resource/repo/project_repository.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +42,7 @@ class PortfolioWebsite extends StatefulWidget {
     final BlogRepository blogRepository = BlogRepository(dao: blogDao);
     final ProjectRepository projectRepository =
         ProjectRepository(dao: projectDao);
+    final AuthRepository authRepository = AuthRepository(auth: _auth);
 
     return MultiRepositoryProvider(
         providers: [
@@ -46,6 +52,9 @@ class PortfolioWebsite extends StatefulWidget {
           RepositoryProvider<ProjectRepository>(
             create: (context) => projectRepository,
           ),
+          RepositoryProvider<AuthRepository>(
+            create: (context) => authRepository,
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -54,6 +63,9 @@ class PortfolioWebsite extends StatefulWidget {
             ),
             BlocProvider(
               create: (context) => ProjectsBloc(repository: projectRepository),
+            ),
+            BlocProvider(
+              create: (context) => AuthBloc(repository: authRepository),
             ),
           ],
           child: PortfolioWebsite(),

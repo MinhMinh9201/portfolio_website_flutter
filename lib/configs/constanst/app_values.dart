@@ -1,6 +1,8 @@
 class AppValues {
   AppValues._();
 
+  static const double INPUT_FORM_HEIGHT = 55;
+
   static const String URL_FB = 'https://www.facebook.com/minh9201';
   static const String URL_MEDIUM = 'https://medium.com/@minhminh9201';
   static const String URL_LINKEDIN =

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/about/sc_about.dart';
+import 'package:portfolio_website/presentation/auth/sc_auth.dart';
 import 'package:portfolio_website/presentation/blog/sc_blog.dart';
 import 'package:portfolio_website/presentation/projects/sc_projects.dart';
 import '../theme_switcher.dart';
@@ -12,7 +13,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
-  List<Widget> _page = [AboutScreen(), BlogScreen(), ProjectsScreen()];
+  List<Widget> _page = [
+    AboutScreen(),
+    BlogScreen(),
+    ProjectsScreen(),
+    AuthScreen()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.mobile_screen_share),
             title: Text('Projects'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.lock),
+            title: Text('Auth'),
           )
         ]);
   }

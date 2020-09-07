@@ -20,7 +20,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         url:
             'https://medium.com/flutter-community/the-flutter-getx-ecosystem-state-management-881c7235511d'),
     Project(
-        id: 1,
+        id: 2,
         name: 'ViSafe',
         description:
             'Flutter is awesome! It’s by far the fastest way to create truly cross platform apps without compromising beauty...',
@@ -30,7 +30,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         url:
             'https://medium.com/flutter-community/the-flutter-getx-ecosystem-state-management-881c7235511d'),
     Project(
-        id: 1,
+        id: 3,
         name: 'ViSafe',
         description:
             'Flutter is awesome! It’s by far the fastest way to create truly cross platform apps without compromising beauty...',
