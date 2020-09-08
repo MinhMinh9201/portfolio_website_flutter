@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neumorphic/neumorphic.dart';
 import 'package:portfolio_website/configs/configs.dart';
-import 'package:portfolio_website/presentation/auth/bloc/auth_bloc.dart';
-import 'package:portfolio_website/presentation/auth/bloc/auth_state.dart';
-import 'package:portfolio_website/presentation/widgets/widget_button.dart';
+import 'package:portfolio_website/presentation/presentation.dart';
+import 'package:portfolio_website/presentation/widgets/widget_frame.dart';
 import 'package:portfolio_website/presentation/widgets/widget_input.dart';
 import 'package:portfolio_website/presentation/widgets/widget_response.dart';
+import 'package:portfolio_website/utils/utils.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 
-import '../theme_switcher.dart';
+import 'bloc/bloc.dart';
 
 class NavigationScreen extends StatefulWidget {
   @override
@@ -19,11 +20,20 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {},
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        body: _buildBody(),
+    return BlocListener<NavigationBloc, NavigationState>(
+      listener: (context, state) {
+        if (state is NavigationAuthenticated) {
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routers.navigation, (route) => true);
+          });
+        } else if (state is NavigationNotAuthenticated) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routers.navigation, (route) => true);
+        } else {}
+      },
+      child: WidgetFrame(
+        child: _buildBody(),
       ),
     );
   }
@@ -32,6 +42,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -72,19 +83,46 @@ class _NavigationScreenState extends State<NavigationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildButtonOutline(
-                title: 'Support Me', action: () {}, icon: AppImages.icPaypal),
+                title: 'Support Me',
+                action: () {
+                  html.window.open("https://www.paypal.com/vn/home", "Support");
+                },
+                icon: AppImages.icPaypal),
             const SizedBox(
               width: 10,
             ),
             _buildButtonOutline(
                 title: 'Minh Minh',
-                action: () {},
+                action: () {
+                  Navigator.pushNamed(
+                      context, Routers.profileOf(name: "@minhminh9201"));
+                },
                 icon: AppImages.icAvatarMinhMinh),
             const SizedBox(
               width: 10,
             ),
-            _buildButtonOutline(
-                title: 'SignUp', action: () {}, icon: AppImages.icSignUp),
+            BlocBuilder<NavigationBloc, NavigationState>(
+              builder: (context, state) {
+                if (state is NavigationAuthenticated)
+                  return _buildButtonOutline(
+                      title:
+                          '${AppUtils.emailToUsername(email: state.user.email)}',
+                      action: () {
+                        Navigator.pushNamed(
+                            context,
+                            Routers.profileOf(
+                                name:
+                                    '${AppUtils.emailToUsername(email: state.user.email)}'));
+                      },
+                      icon: AppImages.icAvatarUser);
+                return _buildButtonOutline(
+                    title: 'SignIn',
+                    action: () {
+                      Navigator.pushNamed(context, Routers.login);
+                    },
+                    icon: AppImages.icSignUp);
+              },
+            ),
           ],
         ),
       ],
@@ -182,18 +220,4 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
     );
   }
-
-  Widget _buildAppBar() => AppBar(
-        actions: [
-          IconButton(
-              icon: ThemeSwitcher.of(context).isLightMode
-                  ? Image.asset(
-                      AppImages.icMoon,
-                      height: 20,
-                      width: 20,
-                    )
-                  : Icon(Icons.wb_sunny),
-              onPressed: () => ThemeSwitcher.of(context).switchMode())
-        ],
-      );
 }

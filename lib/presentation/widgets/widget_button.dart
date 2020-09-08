@@ -38,8 +38,9 @@ class WidgetButton extends StatelessWidget {
                   Text(
                     text ?? "",
                     style: isEnable
-                        ? AppStyles.DEFAULT_MEDIUM.copyWith(color: Colors.white)
-                        : AppStyles.DEFAULT_MEDIUM
+                        ? AppStyles.DEFAULT_MEDIUM_BOLD
+                            .copyWith(color: Colors.white)
+                        : AppStyles.DEFAULT_MEDIUM_BOLD
                             .copyWith(color: AppColors.grey),
                   )),
         ),

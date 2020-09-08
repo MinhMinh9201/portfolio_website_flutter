@@ -288,6 +288,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
+  fluro:
+    dependency: "direct main"
+    description:
+      name: fluro
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -450,13 +457,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
-  neumorphic:
-    dependency: "direct main"
-    description:
-      name: neumorphic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   node_interop:
     dependency: transitive
     description:

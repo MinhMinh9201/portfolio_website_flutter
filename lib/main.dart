@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
-import 'package:portfolio_website/presentation/auth/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
+import 'package:portfolio_website/presentation/login/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/navigation/sc_navigation.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
@@ -14,6 +14,9 @@ import 'package:portfolio_website/resource/database/dao/dao.dart';
 import 'package:portfolio_website/resource/repo/auth_repository.dart';
 import 'package:portfolio_website/resource/repo/blog_repository.dart';
 import 'package:portfolio_website/resource/repo/project_repository.dart';
+
+import 'presentation/navigation/bloc/bloc.dart';
+import 'presentation/register/bloc/bloc.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -66,7 +69,13 @@ class PortfolioWebsite extends StatefulWidget {
               create: (context) => ProjectsBloc(repository: projectRepository),
             ),
             BlocProvider(
-              create: (context) => AuthBloc(repository: authRepository),
+              create: (context) => NavigationBloc(),
+            ),
+            BlocProvider(
+              create: (context) => LoginBloc(repository: authRepository),
+            ),
+            BlocProvider(
+              create: (context) => RegisterBloc(repository: authRepository),
             ),
           ],
           child: PortfolioWebsite(),
@@ -84,6 +93,7 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
           ? lightTheme(context)
           : darkTheme(context),
       home: NavigationScreen(),
+      onGenerateRoute: Routers.generateRoute,
     );
   }
 }
