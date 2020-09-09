@@ -25,11 +25,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
         if (state is NavigationAuthenticated) {
           Future.delayed(Duration(seconds: 1), () {
             Navigator.pushNamedAndRemoveUntil(
-                context, Routers.navigation, (route) => true);
+                context, Routers.navigation, (route) => false);
           });
         } else if (state is NavigationNotAuthenticated) {
           Navigator.pushNamedAndRemoveUntil(
-              context, Routers.navigation, (route) => true);
+              context, Routers.navigation, (route) => false);
         } else {}
       },
       child: WidgetFrame(

@@ -1,8 +1,5 @@
 class AppStrings {
   AppStrings._();
-
-  static const name = "Minh Minh";
-
   static const slogan = "This is a site free for upload your portfolio!";
   static const description =
       "You can assist me, consult my profile or register and create your profile\nsimply and completely for free.";

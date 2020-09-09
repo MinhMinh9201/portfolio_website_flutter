@@ -881,18 +881,499 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   }
 }
 
+class Profile extends DataClass implements Insertable<Profile> {
+  final String id;
+  final String name;
+  final String email;
+  final String description;
+  final String image;
+  final String urls;
+  final int isDefault;
+  final DateTime createTime;
+  Profile(
+      {@required this.id,
+      @required this.name,
+      @required this.email,
+      this.description,
+      this.image,
+      this.urls,
+      @required this.isDefault,
+      this.createTime});
+  factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return Profile(
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      email:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}email']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      image:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}image']),
+      urls: stringType.mapFromDatabaseResponse(data['${effectivePrefix}urls']),
+      isDefault:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}is_default']),
+      createTime: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}create_time']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<String>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || urls != null) {
+      map['urls'] = Variable<String>(urls);
+    }
+    if (!nullToAbsent || isDefault != null) {
+      map['is_default'] = Variable<int>(isDefault);
+    }
+    if (!nullToAbsent || createTime != null) {
+      map['create_time'] = Variable<DateTime>(createTime);
+    }
+    return map;
+  }
+
+  ProfilesCompanion toCompanion(bool nullToAbsent) {
+    return ProfilesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      image:
+          image == null && nullToAbsent ? const Value.absent() : Value(image),
+      urls: urls == null && nullToAbsent ? const Value.absent() : Value(urls),
+      isDefault: isDefault == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isDefault),
+      createTime: createTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createTime),
+    );
+  }
+
+  factory Profile.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Profile(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      email: serializer.fromJson<String>(json['email']),
+      description: serializer.fromJson<String>(json['description']),
+      image: serializer.fromJson<String>(json['image']),
+      urls: serializer.fromJson<String>(json['urls']),
+      isDefault: serializer.fromJson<int>(json['isDefault']),
+      createTime: serializer.fromJson<DateTime>(json['createTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'email': serializer.toJson<String>(email),
+      'description': serializer.toJson<String>(description),
+      'image': serializer.toJson<String>(image),
+      'urls': serializer.toJson<String>(urls),
+      'isDefault': serializer.toJson<int>(isDefault),
+      'createTime': serializer.toJson<DateTime>(createTime),
+    };
+  }
+
+  Profile copyWith(
+          {String id,
+          String name,
+          String email,
+          String description,
+          String image,
+          String urls,
+          int isDefault,
+          DateTime createTime}) =>
+      Profile(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        description: description ?? this.description,
+        image: image ?? this.image,
+        urls: urls ?? this.urls,
+        isDefault: isDefault ?? this.isDefault,
+        createTime: createTime ?? this.createTime,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Profile(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('description: $description, ')
+          ..write('image: $image, ')
+          ..write('urls: $urls, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('createTime: $createTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          name.hashCode,
+          $mrjc(
+              email.hashCode,
+              $mrjc(
+                  description.hashCode,
+                  $mrjc(
+                      image.hashCode,
+                      $mrjc(urls.hashCode,
+                          $mrjc(isDefault.hashCode, createTime.hashCode))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Profile &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.email == this.email &&
+          other.description == this.description &&
+          other.image == this.image &&
+          other.urls == this.urls &&
+          other.isDefault == this.isDefault &&
+          other.createTime == this.createTime);
+}
+
+class ProfilesCompanion extends UpdateCompanion<Profile> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> email;
+  final Value<String> description;
+  final Value<String> image;
+  final Value<String> urls;
+  final Value<int> isDefault;
+  final Value<DateTime> createTime;
+  const ProfilesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.email = const Value.absent(),
+    this.description = const Value.absent(),
+    this.image = const Value.absent(),
+    this.urls = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.createTime = const Value.absent(),
+  });
+  ProfilesCompanion.insert({
+    @required String id,
+    @required String name,
+    @required String email,
+    this.description = const Value.absent(),
+    this.image = const Value.absent(),
+    this.urls = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.createTime = const Value.absent(),
+  })  : id = Value(id),
+        name = Value(name),
+        email = Value(email);
+  static Insertable<Profile> custom({
+    Expression<String> id,
+    Expression<String> name,
+    Expression<String> email,
+    Expression<String> description,
+    Expression<String> image,
+    Expression<String> urls,
+    Expression<int> isDefault,
+    Expression<DateTime> createTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (description != null) 'description': description,
+      if (image != null) 'image': image,
+      if (urls != null) 'urls': urls,
+      if (isDefault != null) 'is_default': isDefault,
+      if (createTime != null) 'create_time': createTime,
+    });
+  }
+
+  ProfilesCompanion copyWith(
+      {Value<String> id,
+      Value<String> name,
+      Value<String> email,
+      Value<String> description,
+      Value<String> image,
+      Value<String> urls,
+      Value<int> isDefault,
+      Value<DateTime> createTime}) {
+    return ProfilesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      description: description ?? this.description,
+      image: image ?? this.image,
+      urls: urls ?? this.urls,
+      isDefault: isDefault ?? this.isDefault,
+      createTime: createTime ?? this.createTime,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (urls.present) {
+      map['urls'] = Variable<String>(urls.value);
+    }
+    if (isDefault.present) {
+      map['is_default'] = Variable<int>(isDefault.value);
+    }
+    if (createTime.present) {
+      map['create_time'] = Variable<DateTime>(createTime.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfilesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('description: $description, ')
+          ..write('image: $image, ')
+          ..write('urls: $urls, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('createTime: $createTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $ProfilesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _emailMeta = const VerificationMeta('email');
+  GeneratedTextColumn _email;
+  @override
+  GeneratedTextColumn get email => _email ??= _constructEmail();
+  GeneratedTextColumn _constructEmail() {
+    return GeneratedTextColumn(
+      'email',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _imageMeta = const VerificationMeta('image');
+  GeneratedTextColumn _image;
+  @override
+  GeneratedTextColumn get image => _image ??= _constructImage();
+  GeneratedTextColumn _constructImage() {
+    return GeneratedTextColumn(
+      'image',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _urlsMeta = const VerificationMeta('urls');
+  GeneratedTextColumn _urls;
+  @override
+  GeneratedTextColumn get urls => _urls ??= _constructUrls();
+  GeneratedTextColumn _constructUrls() {
+    return GeneratedTextColumn(
+      'urls',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _isDefaultMeta = const VerificationMeta('isDefault');
+  GeneratedIntColumn _isDefault;
+  @override
+  GeneratedIntColumn get isDefault => _isDefault ??= _constructIsDefault();
+  GeneratedIntColumn _constructIsDefault() {
+    return GeneratedIntColumn(
+      'is_default',
+      $tableName,
+      false,
+    )..clientDefault = () => 0;
+  }
+
+  final VerificationMeta _createTimeMeta = const VerificationMeta('createTime');
+  GeneratedDateTimeColumn _createTime;
+  @override
+  GeneratedDateTimeColumn get createTime =>
+      _createTime ??= _constructCreateTime();
+  GeneratedDateTimeColumn _constructCreateTime() {
+    return GeneratedDateTimeColumn(
+      'create_time',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, email, description, image, urls, isDefault, createTime];
+  @override
+  $ProfilesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'profiles';
+  @override
+  final String actualTableName = 'profiles';
+  @override
+  VerificationContext validateIntegrity(Insertable<Profile> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email'], _emailMeta));
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description'], _descriptionMeta));
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image'], _imageMeta));
+    }
+    if (data.containsKey('urls')) {
+      context.handle(
+          _urlsMeta, urls.isAcceptableOrUnknown(data['urls'], _urlsMeta));
+    }
+    if (data.containsKey('is_default')) {
+      context.handle(_isDefaultMeta,
+          isDefault.isAcceptableOrUnknown(data['is_default'], _isDefaultMeta));
+    }
+    if (data.containsKey('create_time')) {
+      context.handle(
+          _createTimeMeta,
+          createTime.isAcceptableOrUnknown(
+              data['create_time'], _createTimeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Profile map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Profile.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $ProfilesTable createAlias(String alias) {
+    return $ProfilesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $BlogsTable _blogs;
   $BlogsTable get blogs => _blogs ??= $BlogsTable(this);
   $ProjectsTable _projects;
   $ProjectsTable get projects => _projects ??= $ProjectsTable(this);
+  $ProfilesTable _profiles;
+  $ProfilesTable get profiles => _profiles ??= $ProfilesTable(this);
   BlogDao _blogDao;
   BlogDao get blogDao => _blogDao ??= BlogDao(this as AppDatabase);
   ProjectDao _projectDao;
   ProjectDao get projectDao => _projectDao ??= ProjectDao(this as AppDatabase);
+  ProfileDao _profileDao;
+  ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [blogs, projects];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [blogs, projects, profiles];
 }

@@ -1,11 +1,3 @@
-// import 'package:equatable/equatable.dart';
-
-// class AuthState extends Equatable {
-//   const AuthState();
-//   @override
-//   List<Object> get props => [];
-// }
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginState {

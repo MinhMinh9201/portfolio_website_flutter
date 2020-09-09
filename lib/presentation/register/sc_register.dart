@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
-import 'package:portfolio_website/presentation/navigation/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/register/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/widgets/widget_button.dart';
@@ -37,8 +36,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          BlocProvider.of<NavigationBloc>(context)
-              .add(AuthenticatedNavigation(user: state.user));
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.pushReplacementNamed(context, Routers.login);
+          });
         }
       },
       child: BlocBuilder<RegisterBloc, RegisterState>(

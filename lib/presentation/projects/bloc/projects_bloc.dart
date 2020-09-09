@@ -8,39 +8,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
   ProjectsBloc({this.repository}) : super(ProjectsLoading());
 
-  final List<Project> projects = [
-    Project(
-        id: 1,
-        name: 'ViSafe',
-        description:
-            'Flutter is awesome! It’s by far the fastest way to create truly cross platform apps without compromising beauty...',
-        image: 'https://miro.medium.com/max/700/1*pAlBTVQaImMOhq1xBbFy9w.png',
-        isFromFirebase: 1,
-        createTime: DateTime.now(),
-        url:
-            'https://medium.com/flutter-community/the-flutter-getx-ecosystem-state-management-881c7235511d'),
-    Project(
-        id: 2,
-        name: 'ViSafe',
-        description:
-            'Flutter is awesome! It’s by far the fastest way to create truly cross platform apps without compromising beauty...',
-        image: 'https://miro.medium.com/max/700/1*pAlBTVQaImMOhq1xBbFy9w.png',
-        isFromFirebase: 1,
-        createTime: DateTime.now(),
-        url:
-            'https://medium.com/flutter-community/the-flutter-getx-ecosystem-state-management-881c7235511d'),
-    Project(
-        id: 3,
-        name: 'ViSafe',
-        description:
-            'Flutter is awesome! It’s by far the fastest way to create truly cross platform apps without compromising beauty...',
-        image: 'https://miro.medium.com/max/700/1*pAlBTVQaImMOhq1xBbFy9w.png',
-        isFromFirebase: 1,
-        createTime: DateTime.now(),
-        url:
-            'https://medium.com/flutter-community/the-flutter-getx-ecosystem-state-management-881c7235511d'),
-  ];
-
   @override
   Stream<ProjectsState> mapEventToState(ProjectsEvent event) async* {
     if (event is LoadProjects) {
@@ -66,21 +33,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       if (data != null && data.length != 0) {
         return data;
       } else {
-        await initData();
-        return projects;
+        return [];
       }
     } catch (e) {
       throw NullThrownError();
-    }
-  }
-
-  Future initData() async {
-    try {
-      projects.forEach((project) {
-        repository.insertProject(project);
-      });
-    } catch (e) {
-      return e.toString();
     }
   }
 }
