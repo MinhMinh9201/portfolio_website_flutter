@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/login/bloc/bloc.dart';
@@ -92,6 +94,28 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
       theme: ThemeSwitcher.of(context).isLightMode
           ? lightTheme(context)
           : darkTheme(context),
+      supportedLocales: AppLanguage.getSupportLanguage().map((e) => e.locale),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        if (locale == null) {
+          debugPrint("*language locale is null!!!");
+          return supportedLocales.first;
+        }
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode &&
+              supportedLocale.countryCode == locale.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
+      locale: Locale('vi', 'VN'),
       home: NavigationScreen(),
       onGenerateRoute: Routers.generateRoute,
     );

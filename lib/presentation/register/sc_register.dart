@@ -120,14 +120,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'You have account? We just sign in!',
+          AppLocalizations.of(context).translate('auth.sign_in_description'),
           style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 6,
         ),
         _buildButtonOutline(
-            title: 'SignIn',
+            title: AppLocalizations.of(context).translate('auth.sign_in'),
             action: () {
               Navigator.pushReplacementNamed(context, Routers.login);
             },
@@ -210,13 +211,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 borderRadius: BorderRadius.circular(26), color: Colors.white),
             child: (state.isSuccess ?? false)
                 ? Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       WidgetCircleProgress(),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
-                        'Successful!',
+                        AppLocalizations.of(context).translate('app.success'),
                         style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.w800,
                             fontFamily: AppStyles.FONT_SHRIKHAND),
@@ -297,14 +299,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return WidgetInput(
       inputType: TextInputType.emailAddress,
       inputController: _emailController,
-      hint: 'Username',
+      hint: AppLocalizations.of(context).translate('auth.hint_username'),
     );
   }
 
   Widget _buildPasswordInput() {
     return WidgetInput(
       inputController: _passwordController,
-      hint: 'Password',
+      hint: AppLocalizations.of(context).translate('auth.hint_password'),
       obscureText: obscurePassword,
       endIcon: IconButton(
         icon: Icon(
@@ -325,7 +327,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildPasswordConfirmInput() {
     return WidgetInput(
       inputController: _passwordConfirmController,
-      hint: 'Password confirm',
+      hint:
+          AppLocalizations.of(context).translate('auth.hint_password_confirm'),
       obscureText: obscurePassword,
       endIcon: IconButton(
         icon: Icon(

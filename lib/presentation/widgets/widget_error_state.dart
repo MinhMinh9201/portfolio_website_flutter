@@ -21,7 +21,8 @@ class WidgetErrorState extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                message ?? AppStrings.messageError,
+                message ??
+                    AppLocalizations.of(context).translate('app.message_error'),
                 style: AppStyles.DEFAULT_SMALL_BOLD,
               ),
             ),

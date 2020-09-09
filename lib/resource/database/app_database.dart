@@ -30,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
           id: AppDefautls.uid,
           name: AppDefautls.name,
           email: AppDefautls.email,
-          description: AppStrings.description,
+          description: AppDefautls.description,
           urls: AppDefautls.urls,
           isDefault: 1,
           image: "",

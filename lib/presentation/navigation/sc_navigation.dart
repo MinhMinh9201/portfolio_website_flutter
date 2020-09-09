@@ -68,22 +68,27 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Column(
       children: [
         Text(
-          AppStrings.slogan,
+          AppLocalizations.of(context).translate('app.slogan'),
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.title,
         ),
+        const SizedBox(
+          height: 4,
+        ),
         Text(
-          AppStrings.description,
+          AppLocalizations.of(context).translate('app.description'),
           style: Theme.of(context).textTheme.subtitle,
           textAlign: TextAlign.center,
         ),
         const SizedBox(
-          height: 8,
+          height: 10,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          alignment: WrapAlignment.center,
           children: [
             _buildButtonOutline(
-                title: 'Support Me',
+                title: AppLocalizations.of(context)
+                    .translate('navigation.support_me'),
                 action: () {
                   html.window.open("https://www.paypal.com/vn/home", "Support");
                 },
@@ -92,7 +97,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
               width: 10,
             ),
             _buildButtonOutline(
-                title: 'Minh Minh',
+                title:
+                    AppLocalizations.of(context).translate('navigation.owner'),
                 action: () {
                   Navigator.pushNamed(
                       context, Routers.profileOf(name: "@minhminh9201"));
@@ -105,8 +111,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
               builder: (context, state) {
                 if (state is NavigationAuthenticated)
                   return _buildButtonOutline(
-                      title:
-                          '${AppUtils.emailToUsername(email: state.user.email)}',
+                      title: AppLocalizations.of(context)
+                          .translate('navigation.profile'),
                       action: () {
                         Navigator.pushNamed(
                             context,
@@ -116,7 +122,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                       },
                       icon: AppImages.icAvatarUser);
                 return _buildButtonOutline(
-                    title: 'SignIn',
+                    title: AppLocalizations.of(context)
+                        .translate('navigation.sign_in'),
                     action: () {
                       Navigator.pushNamed(context, Routers.login);
                     },
@@ -157,7 +164,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
           radiusBorder: 50,
           style: AppStyles.DEFAULT_LARGE,
           inputController: _controller,
-          hint: AppStrings.hintSearch,
+          hint:
+              AppLocalizations.of(context).translate('navigation.hint_search'),
           height: AppValues.INPUT_FORM_HEIGHT * 1.25,
           endIcon: IconButton(
             icon: Icon(Icons.search_rounded),
@@ -172,7 +180,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
           radiusBorder: 50,
           style: AppStyles.DEFAULT_MEDIUM,
           inputController: _controller,
-          hint: AppStrings.hintSearch,
+          hint:
+              AppLocalizations.of(context).translate('navigation.hint_search'),
           height: AppValues.INPUT_FORM_HEIGHT * 1.25,
           endIcon: IconButton(
             icon: Icon(Icons.search_rounded),

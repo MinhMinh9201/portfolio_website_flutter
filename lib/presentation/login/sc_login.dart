@@ -117,57 +117,51 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'You don\'t have account? We can create it!',
+          AppLocalizations.of(context).translate('auth.sign_up_description'),
           style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 6,
         ),
-        _buildButtonOutline(
-            title: 'SignUp',
-            action: () {
+        Container(
+          width: 145,
+          height: 45,
+          child: GestureDetector(
+            onTap: () {
               Navigator.pushReplacementNamed(context, Routers.register);
             },
-            icon: AppImages.icSignUp)
-      ],
-    );
-  }
-
-  Widget _buildButtonOutline({Function action, String icon, String title}) {
-    return Container(
-      width: 145,
-      height: 45,
-      child: GestureDetector(
-        onTap: action,
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: AppColors.primary, width: 2.5),
-              borderRadius: BorderRadius.circular(20)),
-          child: Center(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '$title',
-                  style: Theme.of(context).textTheme.subtitle,
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: AppColors.primary, width: 2.5),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Center(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).translate('auth.sign_up'),
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    const SizedBox(width: 4),
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircleAvatar(
+                        backgroundImage: Image.asset(AppImages.icSignUp).image,
+                        backgroundColor: Colors.white,
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(width: 4),
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircleAvatar(
-                    backgroundImage: Image.asset('$icon').image,
-                    backgroundColor: Colors.white,
-                  ),
-                )
-              ],
+              )),
             ),
-          )),
-        ),
-      ),
+          ),
+        )
+      ],
     );
   }
 
@@ -194,13 +188,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(26), color: Colors.white),
             child: (state.isSuccess ?? false)
                 ? Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       WidgetCircleProgress(),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
-                        'Successful!',
+                        AppLocalizations.of(context).translate('app.success'),
                         style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.w800,
                             fontFamily: AppStyles.FONT_SHRIKHAND),
@@ -289,14 +284,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return WidgetInput(
       inputType: TextInputType.emailAddress,
       inputController: _emailController,
-      hint: 'Username',
+      hint: AppLocalizations.of(context).translate('auth.hint_username'),
     );
   }
 
   Widget _buildPasswordInput() {
     return WidgetInput(
       inputController: _passwordController,
-      hint: 'Password',
+      hint: AppLocalizations.of(context).translate('auth.hint_password'),
       obscureText: obscurePassword,
       endIcon: IconButton(
         icon: Icon(

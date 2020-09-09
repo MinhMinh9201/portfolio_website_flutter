@@ -1,0 +1,20 @@
+{
+    "app.slogan" : "This is a site free for upload your portfolio!",
+    "app.description" : "You can assist me, consult my profile or register\nand create your profile simply and completely for free.",
+    "app.message_error" : "Looks like we have a bit of a problem loading the data!",
+    "app.success" : "Successful!",
+
+    "navigation.support_me" : "Support Me",
+    "navigation.profile" : "Profile",
+    "navigation.owner" : "Minh Minh",
+    "navigation.sign_in" : "SignIn",
+    "navigation.hint_search" : "Enter your friend's email ...",
+    
+    "auth.hint_username" :"Email...",
+    "auth.hint_password" :"Password...",
+    "auth.hint_password_confirm" :"Password confirm...",
+    "auth.sign_up" : "SignUp",
+    "auth.sign_up_description" : "You don't have account? We can create it!",
+    "auth.sign_in" : "SignIn",
+    "auth.sign_in_description" : "You have account? We just sign in!"
+}

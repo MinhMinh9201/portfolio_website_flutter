@@ -1,0 +1,20 @@
+{
+    "app.slogan" : "Một nơi miễn phí để bạn tạo hồ sơ giới thiệu bản thân!",
+    "app.description" : "Bạn có thể hỗ trợ tôi, tham khảo trang profile hoặc đăng ký\nvà tạo trang profile của riêng bạn một cách đơn giản và hoàn toàn miễn phí.",
+    "app.message_error" : "Có vẻ như chúng ta đang có chút vấn đề khi tải dữ liệu!",
+    "app.success" : "Thành công!",
+
+    "navigation.support_me" : "Hỗ trợ",
+    "navigation.owner" : "Minh Minh",
+    "navigation.profile" : "Hồ sơ",
+    "navigation.sign_in" : "Đăng nhập",
+    "navigation.hint_search" : "Nhập email người dùng ...",
+
+    "auth.hint_username" :"Email...",
+    "auth.hint_password" :"Password...",
+    "auth.hint_password_confirm" :"Password confirm...",
+    "auth.sign_up" : "Đăng ký",
+    "auth.sign_up_description" : "Bạn chưa có tài khoản? Đăng ký ngay!",
+    "auth.sign_in" : "Đăng nhập",
+    "auth.sign_in_description" : "Bạn đã có tài khoản? Đăng nhập ngay!"
+}
