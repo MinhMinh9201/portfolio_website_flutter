@@ -10,9 +10,9 @@
     "navigation.sign_in" : "SignIn",
     "navigation.hint_search" : "Enter your friend's email ...",
     
-    "auth.hint_username" :"Email...",
-    "auth.hint_password" :"Password...",
-    "auth.hint_password_confirm" :"Password confirm...",
+    "auth.hint_username" :"Email ...",
+    "auth.hint_password" :"Password ...",
+    "auth.hint_password_confirm" :"Password confirm ...",
     "auth.sign_up" : "SignUp",
     "auth.sign_up_description" : "You don't have account? We can create it!",
     "auth.sign_in" : "SignIn",

@@ -28,7 +28,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
 
   Future<List<Blog>> fetchData() async {
     try {
-      final data = await repository.getAll();
+      final data = await repository.getAllDao();
       if (data != null && data.length != 0) {
         return data;
       } else {

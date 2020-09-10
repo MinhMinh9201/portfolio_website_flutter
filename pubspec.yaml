@@ -23,15 +23,14 @@ dependencies:
   flutter_bloc: ^6.0.5
 
   #Sqlite - Local prefrences
-  # moor_flutter: 
   moor: ^3.3.1
   shared_preferences: ^0.5.10
 
   #Firebase:
   firebase_auth: ^0.18.0+1
+  firebase: ^7.3.0
   
   #Other
-  fluro: ^1.6.3
   cached_network_image:
   shimmer:
   animations:

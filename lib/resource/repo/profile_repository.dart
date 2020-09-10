@@ -4,51 +4,64 @@ import 'package:portfolio_website/utils/app_utils.dart';
 import 'package:firebase/firestore.dart' as fs;
 import 'package:firebase/firebase.dart' as fb;
 
-class ProjectRepository {
-  final ProjectDao dao;
+class ProfileRepository {
+  final ProfileDao dao;
   final fs.DocumentReference ref;
-  ProjectRepository({this.dao})
-      : ref = fb.firestore().collection('database').doc('projects');
+  ProfileRepository({this.dao})
+      : ref = fb.firestore().collection('database').doc('profiles');
 
-  Future<List<Project>> getAllDao() => dao.getAll();
+  Future<Profile> getProfileDao() => dao.getProfile();
 
-  Future insertProject(Project project) => dao.insertProject(project);
+  Future insertDao(Profile profile) => dao.insertProfile(profile);
 
-  Future updateProject(Project project) => dao.updateProject(project);
+  Future updateDao(Profile profile) => dao.updateProfile(profile);
 
-  Future deleteProject(Project project) => dao.deleteProject(project);
+  Future deleteDao(Profile profile) => dao.deleteProfile(profile);
 
   //Firebase
-  Future<List<Blog>> getAll({String username}) async {
+  Future<List<Profile>> getAll({String username}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
       final query = await col.get();
-      final blogs = query.docs
-          .map((e) => Blog.fromJson(AppUtils.parseData(e.data())))
+      final profiles = query.docs
+          .map((e) => Profile.fromJson(AppUtils.parseData(e.data())))
           .toList();
-      return blogs;
+      return profiles;
     } catch (e) {
       return [];
     }
   }
 
-  Future<bool> insert({String username, Blog blog}) async {
+  Future<Profile> get({String username}) async {
+    try {
+      List<Profile> data = await this.getAll(username: username);
+      if (data != null && data.length != 0) {
+        return data.firstWhere((element) => element.isDefault == 1) ??
+            data.first;
+      } else
+        return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> insert({String username, Profile profile}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.add(AppUtils.mapData(blog?.toJson()));
+      await col.add(AppUtils.mapData(profile?.toJson()));
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> update({String id, String username, Blog blog}) async {
+  Future<bool> update({String id, String username, Profile profile}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.doc(id).set((AppUtils.mapData(blog?.toJson())));
+      await col.doc(id).set((AppUtils.mapData(profile?.toJson())));
       return true;
     } catch (e) {
       return false;

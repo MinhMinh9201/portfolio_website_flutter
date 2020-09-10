@@ -6,19 +6,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
 import 'package:portfolio_website/presentation/login/bloc/bloc.dart';
-import 'package:portfolio_website/presentation/navigation/sc_navigation.dart';
 import 'package:portfolio_website/presentation/presentation.dart';
 import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
-import 'package:portfolio_website/presentation/theme_switcher.dart';
-import 'package:portfolio_website/resource/database/app_database.dart';
-import 'package:portfolio_website/resource/database/dao/blog_dao.dart';
-import 'package:portfolio_website/resource/database/dao/dao.dart';
-import 'package:portfolio_website/resource/repo/auth_repository.dart';
-import 'package:portfolio_website/resource/repo/blog_repository.dart';
-import 'package:portfolio_website/resource/repo/project_repository.dart';
 
+import 'presentation/about/bloc/bloc.dart';
 import 'presentation/navigation/bloc/bloc.dart';
 import 'presentation/register/bloc/bloc.dart';
+import 'resource/resource.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -45,9 +39,12 @@ class PortfolioWebsite extends StatefulWidget {
     final AppDatabase database = AppDatabase();
     final BlogDao blogDao = BlogDao(database);
     final ProjectDao projectDao = ProjectDao(database);
+    final ProfileDao profileDao = ProfileDao(database);
     final BlogRepository blogRepository = BlogRepository(dao: blogDao);
     final ProjectRepository projectRepository =
         ProjectRepository(dao: projectDao);
+    final ProfileRepository profileRepository =
+        ProfileRepository(dao: profileDao);
     final AuthRepository authRepository = AuthRepository(auth: _auth);
 
     return MultiRepositoryProvider(
@@ -57,6 +54,9 @@ class PortfolioWebsite extends StatefulWidget {
           ),
           RepositoryProvider<ProjectRepository>(
             create: (context) => projectRepository,
+          ),
+          RepositoryProvider<ProfileRepository>(
+            create: (context) => profileRepository,
           ),
           RepositoryProvider<AuthRepository>(
             create: (context) => authRepository,
@@ -69,6 +69,9 @@ class PortfolioWebsite extends StatefulWidget {
             ),
             BlocProvider(
               create: (context) => ProjectsBloc(repository: projectRepository),
+            ),
+            BlocProvider(
+              create: (context) => AboutBloc(repository: profileRepository),
             ),
             BlocProvider(
               create: (context) => NavigationBloc(),

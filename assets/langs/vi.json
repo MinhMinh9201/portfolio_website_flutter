@@ -10,9 +10,9 @@
     "navigation.sign_in" : "Đăng nhập",
     "navigation.hint_search" : "Nhập email người dùng ...",
 
-    "auth.hint_username" :"Email...",
-    "auth.hint_password" :"Password...",
-    "auth.hint_password_confirm" :"Password confirm...",
+    "auth.hint_username" :"Email ...",
+    "auth.hint_password" :"Password ...",
+    "auth.hint_password_confirm" :"Password confirm ...",
     "auth.sign_up" : "Đăng ký",
     "auth.sign_up_description" : "Bạn chưa có tài khoản? Đăng ký ngay!",
     "auth.sign_in" : "Đăng nhập",

@@ -1,17 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/theme_switcher.dart';
+import 'package:portfolio_website/presentation/widgets/widget_circle_progress.dart';
+import 'package:portfolio_website/presentation/widgets/widget_error_state.dart';
 import 'dart:html' as Html;
 
 import 'package:portfolio_website/presentation/widgets/widget_response.dart';
 
-class AboutScreen extends StatelessWidget {
+import 'bloc/bloc.dart';
+
+class AboutScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return _buildContent(context);
+  _AboutScreenState createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      BlocProvider.of<AboutBloc>(context).add(LoadAbout());
+    });
   }
 
-  Widget _buildContent(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AboutBloc, AboutState>(builder: (context, state) {
+      if (state is AboutLoading) {
+        return Center(
+          child: WidgetCircleProgress(),
+        );
+      } else if (state is AboutLoaded) {
+        return _buildContent(context: context, state: state);
+      } else if (state is AboutWithError) {
+        return WidgetErrorState(
+          refresh: () async {
+            BlocProvider.of<AboutBloc>(context).add(LoadAbout());
+          },
+        );
+      } else {
+        return WidgetErrorState(
+          refresh: () async {
+            BlocProvider.of<AboutBloc>(context).add(LoadAbout());
+          },
+          message: "Unknow state",
+        );
+      }
+    });
+  }
+
+  Widget _buildContent({BuildContext context, AboutLoaded state}) {
     return SingleChildScrollView(
       child: Center(
         child: Padding(

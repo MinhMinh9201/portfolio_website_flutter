@@ -6,8 +6,7 @@ class AppDefautls {
   static const uid = "CppJ3tQzcDhHINak8NvHfAEMI0X2";
   static const name = "Minh Minh";
   static const email = "minhminh9201@gmail.com";
-  static const description =
-      "Flutter - Android - IOS - Music - Esport - Traving";
+  static const description = "Flutter,Android,IOS,Music,Esport,Traving";
   static const urls = "";
 
   static List<Blog> blogs = [

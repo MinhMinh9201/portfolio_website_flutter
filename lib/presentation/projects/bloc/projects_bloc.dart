@@ -29,7 +29,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
   Future<List<Project>> fetchData() async {
     try {
-      final data = await repository.getAll();
+      final data = await repository.getAllDao();
       if (data != null && data.length != 0) {
         return data;
       } else {
