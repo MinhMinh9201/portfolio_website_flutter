@@ -15,11 +15,14 @@ class BlogScreen extends StatefulWidget {
 }
 
 class _BlogScreenState extends State<BlogScreen> {
+  String username;
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      BlocProvider.of<BlogBloc>(context).add(LoadBlog());
+      String routeName = ModalRoute.of(context).settings.name;
+      username = routeName.substring(routeName.indexOf('@'));
+      BlocProvider.of<BlogBloc>(context).add(LoadBlog(username: username));
     });
   }
 
@@ -103,8 +106,7 @@ class _BlogScreenState extends State<BlogScreen> {
                     .copyWith(color: Colors.white),
               ),
               elevation: 0.0,
-              onPressed: () =>
-                  Html.window.open(AppValues.URL_MEDIUM, '@minhminh'),
+              onPressed: () => Html.window.open(AppValues.URL_MEDIUM, username),
             )
           ],
         ),

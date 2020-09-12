@@ -120,7 +120,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                 name:
                                     '${AppUtils.emailToUsername(email: state.user.email)}'));
                       },
-                      icon: AppImages.icAvatarUser);
+                      icon: AppImages.imgAvatarDefault);
                 return _buildButtonOutline(
                     title: AppLocalizations.of(context)
                         .translate('navigation.sign_in'),
@@ -146,12 +146,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
           height: 125,
           width: 125,
           child: AspectRatio(
-              aspectRatio: 1, child: Image.asset(AppImages.icFirebase))),
+              aspectRatio: 1, child: Image.asset(AppImages.imgFirebase))),
       small: SizedBox(
           height: 105,
           width: 105,
           child: AspectRatio(
-              aspectRatio: 1, child: Image.asset(AppImages.icFirebase))),
+              aspectRatio: 1, child: Image.asset(AppImages.imgFirebase))),
     );
   }
 

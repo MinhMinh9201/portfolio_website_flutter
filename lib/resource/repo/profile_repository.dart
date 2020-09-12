@@ -6,9 +6,8 @@ import 'package:firebase/firebase.dart' as fb;
 
 class ProfileRepository {
   final ProfileDao dao;
-  final fs.DocumentReference ref;
-  ProfileRepository({this.dao})
-      : ref = fb.firestore().collection('database').doc('profiles');
+  final fs.CollectionReference ref;
+  ProfileRepository({this.dao}) : ref = fb.firestore().collection('users');
 
   Future<Profile> getProfileDao() => dao.getProfile();
 
@@ -19,60 +18,37 @@ class ProfileRepository {
   Future deleteDao(Profile profile) => dao.deleteProfile(profile);
 
   //Firebase
-  Future<List<Profile>> getAll({String username}) async {
-    try {
-      final col = ref.collection(
-          '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      final query = await col.get();
-      final profiles = query.docs
-          .map((e) => Profile.fromJson(AppUtils.parseData(e.data())))
-          .toList();
-      return profiles;
-    } catch (e) {
-      return [];
-    }
-  }
-
   Future<Profile> get({String username}) async {
     try {
-      List<Profile> data = await this.getAll(username: username);
-      if (data != null && data.length != 0) {
-        return data.firstWhere((element) => element.isDefault == 1) ??
-            data.first;
-      } else
-        return null;
+      final col = ref.doc(
+          '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
+      final profile = await col.get();
+      return Profile.fromJson(AppUtils.parseData(profile.data()));
     } catch (e) {
+      print('---------Error-----');
+      print(e);
       return null;
     }
   }
 
-  Future<bool> insert({String username, Profile profile}) async {
+  Future<bool> insertOrReplace({String username, Profile profile}) async {
     try {
-      final col = ref.collection(
+      final col = ref.doc(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.add(AppUtils.mapData(profile?.toJson()));
+      await col.set(AppUtils.mapData(profile?.toJson()));
       return true;
     } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> update({String id, String username, Profile profile}) async {
-    try {
-      final col = ref.collection(
-          '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.doc(id).set((AppUtils.mapData(profile?.toJson())));
-      return true;
-    } catch (e) {
+      print('---------Error-----');
+      print(e);
       return false;
     }
   }
 
   Future<bool> delete({String id, String username}) async {
     try {
-      final col = ref.collection(
+      final col = ref.doc(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.doc(id).delete();
+      await col.delete();
       return true;
     } catch (e) {
       return false;

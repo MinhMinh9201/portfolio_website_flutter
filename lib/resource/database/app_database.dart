@@ -1,6 +1,5 @@
 import 'package:moor/moor_web.dart';
 import 'package:moor/moor.dart';
-import 'package:portfolio_website/configs/configs.dart';
 import 'database.dart';
 
 part 'app_database.g.dart';
@@ -23,24 +22,24 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(beforeOpen: (OpeningDetails details) async {
-      await into(profiles).insert(Profile(
-          id: AppDefautls.uid,
-          name: AppDefautls.name,
-          email: AppDefautls.email,
-          description: AppDefautls.description,
-          urls: AppDefautls.urls,
-          isDefault: 1,
-          image: "",
-          createTime: DateTime.now()));
-      AppDefautls.blogs.forEach((element) async {
-        await into(blogs).insert(element);
-      });
-      AppDefautls.projects.forEach((element) async {
-        await into(projects).insert(element);
-      });
-    });
-  }
+  // @override
+  // MigrationStrategy get migration {
+  //   return MigrationStrategy(beforeOpen: (OpeningDetails details) async {
+  //     await into(profiles).insert(Profile(
+  //         id: AppDefautls.uid,
+  //         name: AppDefautls.name,
+  //         email: AppDefautls.email,
+  //         description: AppDefautls.description,
+  //         urls: AppDefautls.urls.toString(),
+  //         isDefault: 1,
+  //         image: "",
+  //         createTime: DateTime.now()));
+  //     AppDefautls.blogs.forEach((element) async {
+  //       await into(blogs).insert(element);
+  //     });
+  //     AppDefautls.projects.forEach((element) async {
+  //       await into(projects).insert(element);
+  //     });
+  //   });
+  // }
 }

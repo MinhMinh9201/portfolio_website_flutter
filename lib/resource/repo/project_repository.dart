@@ -19,36 +19,36 @@ class ProjectRepository {
   Future deleteProject(Project project) => dao.deleteProject(project);
 
   //Firebase
-  Future<List<Blog>> getAll({String username}) async {
+  Future<List<Project>> getAll({String username}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
       final query = await col.get();
-      final blogs = query.docs
-          .map((e) => Blog.fromJson(AppUtils.parseData(e.data())))
+      final projects = query.docs
+          .map((e) => Project.fromJson(AppUtils.parseData(e.data())))
           .toList();
-      return blogs;
+      return projects;
     } catch (e) {
       return [];
     }
   }
 
-  Future<bool> insert({String username, Blog blog}) async {
+  Future<bool> insert({String username, Project project}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.add(AppUtils.mapData(blog?.toJson()));
+      await col.add(AppUtils.mapData(project?.toJson()));
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> update({String id, String username, Blog blog}) async {
+  Future<bool> update({String id, String username, Project project}) async {
     try {
       final col = ref.collection(
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
-      await col.doc(id).set((AppUtils.mapData(blog?.toJson())));
+      await col.doc(id).set((AppUtils.mapData(project?.toJson())));
       return true;
     } catch (e) {
       return false;

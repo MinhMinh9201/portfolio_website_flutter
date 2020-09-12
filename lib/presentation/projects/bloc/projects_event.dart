@@ -6,6 +6,16 @@ class ProjectsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadProjects extends ProjectsEvent {}
+class LoadProjects extends ProjectsEvent {
+  final String username;
+  const LoadProjects({this.username});
+  @override
+  List<Object> get props => [username];
+}
 
-class RefreshProjects extends ProjectsEvent {}
+class RefreshProjects extends ProjectsEvent {
+  final String username;
+  const RefreshProjects({this.username});
+  @override
+  List<Object> get props => [username];
+}

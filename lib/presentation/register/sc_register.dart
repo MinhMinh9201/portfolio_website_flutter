@@ -238,7 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         height: small ? 85 : 125,
         width: small ? 85 : 125,
         child: AspectRatio(
-            aspectRatio: 1, child: Image.asset(AppImages.icFirebase)));
+            aspectRatio: 1, child: Image.asset(AppImages.imgFirebase)));
   }
 
   Widget _buildLoginForm(RegisterState state) {

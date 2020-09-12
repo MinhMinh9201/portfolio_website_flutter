@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
         height: small ? 85 : 125,
         width: small ? 85 : 125,
         child: AspectRatio(
-            aspectRatio: 1, child: Image.asset(AppImages.icFirebase)));
+            aspectRatio: 1, child: Image.asset(AppImages.imgFirebase)));
   }
 
   Widget _buildTitle() {

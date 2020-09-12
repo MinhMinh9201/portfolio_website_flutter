@@ -11,6 +11,7 @@ import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
 
 import 'presentation/about/bloc/bloc.dart';
 import 'presentation/navigation/bloc/bloc.dart';
+import 'presentation/profile/bloc/bloc.dart';
 import 'presentation/register/bloc/bloc.dart';
 import 'resource/resource.dart';
 
@@ -64,6 +65,9 @@ class PortfolioWebsite extends StatefulWidget {
         ],
         child: MultiBlocProvider(
           providers: [
+            BlocProvider(
+              create: (context) => ProfileBloc(),
+            ),
             BlocProvider(
               create: (context) => BlogBloc(repository: blogRepository),
             ),

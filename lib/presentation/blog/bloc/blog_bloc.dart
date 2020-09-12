@@ -10,29 +10,31 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
   @override
   Stream<BlogState> mapEventToState(BlogEvent event) async* {
     if (event is LoadBlog) {
-      yield* _mapLoadToState();
+      yield* _mapLoadToState(event.username);
     } else if (event is RefreshBlog) {
       yield BlogLoading();
-      yield* _mapLoadToState();
+      yield* _mapLoadToState(event.username);
     }
   }
 
-  Stream<BlogState> _mapLoadToState() async* {
+  Stream<BlogState> _mapLoadToState(String username) async* {
     try {
-      final response = await fetchData();
+      print('--------- Load Blog');
+      final response = await fetchData(username);
+      print(response);
       yield BlogLoaded(content: response);
     } catch (e) {
       yield BlogWithError(message: e.toString());
     }
   }
 
-  Future<List<Blog>> fetchData() async {
+  Future<List<Blog>> fetchData(String username) async {
     try {
-      final data = await repository.getAllDao();
+      final data = await repository.getAll(username: username);
       if (data != null && data.length != 0) {
         return data;
       } else {
-        return [];
+        throw NullThrownError();
       }
     } catch (e) {
       throw NullThrownError();

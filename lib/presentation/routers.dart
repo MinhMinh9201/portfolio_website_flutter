@@ -24,9 +24,12 @@ class Routers {
       default:
         if (settings.name.startsWith("$profile/@"))
           return animRoute(ProfileScreen(), name: settings.name);
-        return animRoute(WidgetErrorState(
-          message: 'No route defined for ${settings.name}',
-        ));
+        else if (settings.name == "$profile")
+          return animRoute(NavigationScreen(), name: navigation);
+        else
+          return animRoute(WidgetErrorState(
+            message: 'No route defined for ${settings.name}',
+          ));
     }
   }
 

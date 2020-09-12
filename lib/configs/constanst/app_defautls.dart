@@ -1,13 +1,49 @@
 import 'package:portfolio_website/resource/database/database.dart';
+import 'package:portfolio_website/resource/resource.dart';
+
+import '../configs.dart';
 
 class AppDefautls {
   AppDefautls._();
 
   static const uid = "CppJ3tQzcDhHINak8NvHfAEMI0X2";
   static const name = "Minh Minh";
+  static const avatar =
+      "https://firebasestorage.googleapis.com/v0/b/portfoliowebsiteflutter.appspot.com/o/storage%2Favatar%2FIMG_0351.JPG?alt=media&token=0669c02a-5a91-4afb-be74-234044e6b21f";
   static const email = "minhminh9201@gmail.com";
   static const description = "Flutter,Android,IOS,Music,Esport,Traving";
-  static const urls = "";
+  static List urls = [
+    UrlSocialModel(
+        description: "",
+        icon: AppImages.icGithub,
+        name: "Github",
+        isFromFirebase: 0,
+        url: AppValues.URL_GITHUB),
+    UrlSocialModel(
+        description: "",
+        icon: AppImages.icFB,
+        name: "Facebook",
+        isFromFirebase: 0,
+        url: AppValues.URL_FB),
+    UrlSocialModel(
+        description: "",
+        icon: AppImages.icLinkedIn,
+        name: "LinkedIn",
+        isFromFirebase: 0,
+        url: AppValues.URL_LINKEDIN),
+    UrlSocialModel(
+        description: "",
+        icon: AppImages.icInstagram,
+        name: "Instagram",
+        isFromFirebase: 0,
+        url: AppValues.URL_INSTAGRAM),
+    UrlSocialModel(
+        description: "",
+        icon: AppImages.icMediumLight,
+        name: "Medium",
+        isFromFirebase: 0,
+        url: AppValues.URL_MEDIUM),
+  ];
 
   static List<Blog> blogs = [
     Blog(

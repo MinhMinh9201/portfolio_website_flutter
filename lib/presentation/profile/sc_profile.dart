@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_website/configs/configs.dart';
+import 'package:portfolio_website/presentation/widgets/widget_error_state.dart';
 import '../presentation.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,16 +12,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _selected = 0;
   List<Widget> _page = [AboutScreen(), BlogScreen(), ProjectsScreen()];
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _currentPage(),
-      bottomNavigationBar: _buildNavigationBar(),
-    );
+  void initState() {
+    super.initState();
+    // Future.delayed(Duration.zero, () {
+    // BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
+    // });
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+  //     if (state is ProfileLoading)
+  //       return Center(
+  //         child: WidgetCircleProgress(),
+  //       );
+  //     else if (state is ProfileLoaded)
+  //       return _buildContent();
+  //     else {
+  //       return WidgetErrorState(
+  //         refresh: () async {
+  //           BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
+  //         },
+  //         message: "Unknow state",
+  //       );
+  //     }
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildContent();
+  }
+
+  Widget _buildContent() => Scaffold(
+        appBar: _buildAppBar(),
+        body: _currentPage(),
+        bottomNavigationBar: _buildNavigationBar(),
+      );
+
   Widget _currentPage() {
-    return _page.elementAt(_selected);
+    return _page?.elementAt(_selected) ?? WidgetErrorState();
   }
 
   Widget _buildNavigationBar() {
