@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/configs/configs.dart';
 import 'package:portfolio_website/presentation/about/bloc/bloc.dart';
+import 'package:portfolio_website/presentation/profile/bloc/bloc.dart';
 import 'package:portfolio_website/resource/resource.dart';
+import 'package:portfolio_website/utils/app_utils.dart';
 
 class AboutBloc extends Bloc<AboutEvent, AboutState> {
   final ProfileRepository repository;
+  ProfileBloc profileBloc;
   AboutBloc({this.repository}) : super(AboutLoading());
 
   @override
@@ -14,7 +17,43 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     } else if (event is RefreshAbout) {
       yield AboutLoading();
       yield* _mapLoadToState(username: event.username);
+    } else if (event is EditAbout) {
+      yield* _mapEditProfileToState(
+          profileBloc: event.profileBloc,
+          name: event.name,
+          description: event.description,
+          image: event.image,
+          urls: event.urls);
     }
+  }
+
+  Stream<AboutState> _mapEditProfileToState(
+      {String name,
+      String description,
+      String image,
+      String urls,
+      ProfileBloc profileBloc}) async* {
+    final currentState = state;
+    yield AboutLoading();
+    try {
+      if (currentState is AboutLoaded) {
+        Profile profile = currentState.profile;
+        await repository.insertOrReplace(
+            profile: Profile(
+                email: profile.email,
+                id: profile.id,
+                isDefault: profile.isDefault,
+                image: image ?? profile.image,
+                urls: urls ?? profile.urls,
+                name: name ?? profile.name,
+                createTime: profile.createTime,
+                description: description ?? profile.description),
+            username: AppUtils.emailToUsername(email: profile.email));
+        profileBloc?.add(SwitchControlProfile(editing: false));
+        yield* _mapLoadToState(
+            username: AppUtils.emailToUsername(email: profile.email));
+      }
+    } catch (e) {}
   }
 
   Stream<AboutState> _mapLoadToState({String username}) async* {

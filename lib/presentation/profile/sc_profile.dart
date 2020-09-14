@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:portfolio_website/configs/configs.dart';
+import 'package:portfolio_website/presentation/navigation/bloc/bloc.dart';
+import 'package:portfolio_website/presentation/widgets/widget_circle_progress.dart';
 import 'package:portfolio_website/presentation/widgets/widget_error_state.dart';
 import '../presentation.dart';
+import 'bloc/bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -11,41 +16,47 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selected = 0;
   List<Widget> _page = [AboutScreen(), BlogScreen(), ProjectsScreen()];
+
+  bool hasAuth;
+  String username;
+
   @override
   void initState() {
     super.initState();
-    // Future.delayed(Duration.zero, () {
-    // BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
-    // });
+    Future.delayed(Duration.zero, () {
+      String routeName = ModalRoute.of(context).settings.name;
+      username = routeName.substring(routeName.indexOf('@'));
+      hasAuth = BlocProvider.of<NavigationBloc>(context).state
+          is NavigationAuthenticated;
+      BlocProvider.of<ProfileBloc>(context)
+          .add(LoadProfile(hasAuth: hasAuth, username: username));
+    });
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-  //     if (state is ProfileLoading)
-  //       return Center(
-  //         child: WidgetCircleProgress(),
-  //       );
-  //     else if (state is ProfileLoaded)
-  //       return _buildContent();
-  //     else {
-  //       return WidgetErrorState(
-  //         refresh: () async {
-  //           BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
-  //         },
-  //         message: "Unknow state",
-  //       );
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    return _buildContent();
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      if (state is ProfileLoading)
+        return Center(
+          child: WidgetCircleProgress(),
+        );
+      else if (state is ProfileLoaded) {
+        return _buildContent(
+            isEditing: state.isEditing, isCanEdit: state.isCanEdit);
+      } else {
+        return WidgetErrorState(
+          refresh: () async {
+            BlocProvider.of<ProfileBloc>(context)
+                .add(LoadProfile(hasAuth: hasAuth, username: username));
+          },
+          message: "Unknow state",
+        );
+      }
+    });
   }
 
-  Widget _buildContent() => Scaffold(
-        appBar: _buildAppBar(),
+  Widget _buildContent({bool isEditing, bool isCanEdit}) => Scaffold(
+        appBar: _buildAppBar(isEditing: isEditing, isCanEdit: isCanEdit),
         body: _currentPage(),
         bottomNavigationBar: _buildNavigationBar(),
       );
@@ -80,17 +91,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ]);
   }
 
-  Widget _buildAppBar() => AppBar(
-        actions: [
-          IconButton(
-              icon: ThemeSwitcher.of(context).isLightMode
-                  ? Image.asset(
-                      AppImages.icMoon,
-                      height: 20,
-                      width: 20,
-                    )
-                  : Icon(Icons.wb_sunny),
-              onPressed: () => ThemeSwitcher.of(context).switchMode())
-        ],
-      );
+  Widget _buildAppBar({bool isEditing = false, bool isCanEdit = false}) {
+    return AppBar(
+      actions: [
+        isCanEdit
+            ? IconButton(
+                icon: Icon(isEditing
+                    ? MaterialCommunityIcons.eye_outline
+                    : Icons.edit),
+                onPressed: () => BlocProvider.of<ProfileBloc>(context)
+                    .add(SwitchControlProfile(editing: !isEditing)))
+            : SizedBox(),
+        IconButton(
+            icon: ThemeSwitcher.of(context).isLightMode
+                ? Image.asset(
+                    AppImages.icMoon,
+                    height: 20,
+                    width: 20,
+                  )
+                : Icon(Icons.wb_sunny),
+            onPressed: () => ThemeSwitcher.of(context).switchMode())
+      ],
+    );
+  }
 }

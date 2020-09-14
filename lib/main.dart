@@ -66,7 +66,7 @@ class PortfolioWebsite extends StatefulWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ProfileBloc(),
+              create: (context) => ProfileBloc(repository: authRepository),
             ),
             BlocProvider(
               create: (context) => BlogBloc(repository: blogRepository),
@@ -97,7 +97,7 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'PortfoliWebsite',
+      title: 'PortfolioWebsite',
       theme: ThemeSwitcher.of(context).isLightMode
           ? lightTheme(context)
           : darkTheme(context),

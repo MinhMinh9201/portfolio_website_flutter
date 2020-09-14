@@ -16,5 +16,8 @@
     "auth.sign_up" : "Đăng ký",
     "auth.sign_up_description" : "Bạn chưa có tài khoản? Đăng ký ngay!",
     "auth.sign_in" : "Đăng nhập",
-    "auth.sign_in_description" : "Bạn đã có tài khoản? Đăng nhập ngay!"
+    "auth.sign_in_description" : "Bạn đã có tài khoản? Đăng nhập ngay!",
+    
+    "about.hint_name" :"Tên ...",
+    "about.hint_description" :"Từ khóa ..."
 }

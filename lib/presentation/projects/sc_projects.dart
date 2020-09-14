@@ -20,7 +20,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     Future.delayed(Duration.zero, () {
       String routeName = ModalRoute.of(context).settings.name;
       String username = routeName.substring(routeName.indexOf('@'));
-      BlocProvider.of<ProjectsBloc>(context).add(LoadProjects());
+      BlocProvider.of<ProjectsBloc>(context)
+          .add(LoadProjects(username: username));
     });
   }
 

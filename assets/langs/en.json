@@ -16,5 +16,8 @@
     "auth.sign_up" : "SignUp",
     "auth.sign_up_description" : "You don't have account? We can create it!",
     "auth.sign_in" : "SignIn",
-    "auth.sign_in_description" : "You have account? We just sign in!"
+    "auth.sign_in_description" : "You have account? We just sign in!",
+    
+    "about.hint_name" :"Your name ...",
+    "about.hint_description" :"Something ..."
 }

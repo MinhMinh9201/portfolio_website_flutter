@@ -11,15 +11,23 @@ class WidgetInput extends StatefulWidget {
   final TextInputType inputType;
   final Widget endIcon;
   final double height;
+  final double width;
+  final double paddingHorizontal;
   final TextStyle style;
   final double radiusBorder;
+  final int maxLines;
   final double elevation;
+  final double paddingLeftMore;
+  final TextAlign textAlign;
 
   WidgetInput(
       {this.inputController,
       this.onChanged,
+      this.textAlign,
       this.validator,
+      this.paddingLeftMore,
       this.hint,
+      this.maxLines,
       this.inputType = TextInputType.text,
       this.obscureText = false,
       this.autovalidate = false,
@@ -27,6 +35,8 @@ class WidgetInput extends StatefulWidget {
       this.elevation,
       this.style,
       this.radiusBorder,
+      this.width,
+      this.paddingHorizontal,
       this.height});
 
   @override
@@ -39,14 +49,19 @@ class _WidgetInputState extends State<WidgetInput> {
     return Container(
         child: Container(
       height: widget.height ?? AppValues.INPUT_FORM_HEIGHT,
+      width: widget.width,
       child: Card(
         elevation: widget.elevation ?? 2,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.radiusBorder ?? 20)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding:
+              EdgeInsets.symmetric(horizontal: widget.paddingHorizontal ?? 25),
           child: Row(
             children: [
+              SizedBox(
+                width: widget.paddingLeftMore ?? 2,
+              ),
               Expanded(
                 child: TextFormField(
                   controller: widget.inputController,
@@ -56,9 +71,9 @@ class _WidgetInputState extends State<WidgetInput> {
                   autovalidate: widget.autovalidate ?? false,
                   validator: widget.validator,
                   style: widget.style ?? AppStyles.DEFAULT_MEDIUM,
-                  maxLines: 1,
+                  maxLines: widget.maxLines ?? 1,
                   keyboardType: widget.inputType ?? TextInputType.text,
-                  textAlign: TextAlign.left,
+                  textAlign: widget.textAlign ?? TextAlign.left,
                   obscureText: widget.obscureText,
                   decoration: InputDecoration.collapsed(
                     hintText: widget.hint,
