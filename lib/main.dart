@@ -3,17 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:portfolio_website/configs/configs.dart';
-import 'package:portfolio_website/presentation/blog/bloc/bloc.dart';
-import 'package:portfolio_website/presentation/login/bloc/bloc.dart';
-import 'package:portfolio_website/presentation/presentation.dart';
-import 'package:portfolio_website/presentation/projects/bloc/bloc.dart';
+import 'package:get/get.dart';
+import 'package:portfolio_website/src/configs/configs.dart';
+import 'package:portfolio_website/src/presentation/blog/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/login/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/presentation.dart';
+import 'package:portfolio_website/src/presentation/projects/bloc/bloc.dart';
 
-import 'presentation/about/bloc/bloc.dart';
-import 'presentation/navigation/bloc/bloc.dart';
-import 'presentation/profile/bloc/bloc.dart';
-import 'presentation/register/bloc/bloc.dart';
-import 'resource/resource.dart';
+import 'src/presentation/about/bloc/bloc.dart';
+import 'src/presentation/about/description/bloc/bloc.dart';
+import 'src/presentation/navigation/bloc/bloc.dart';
+import 'src/presentation/profile/bloc/bloc.dart';
+import 'src/presentation/register/bloc/bloc.dart';
+import 'src/resource/resource.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -37,6 +39,7 @@ class PortfolioWebsite extends StatefulWidget {
   _PortfolioWebsiteState createState() => _PortfolioWebsiteState();
 
   static Widget runWidget() {
+    Bloc.observer = SimpleBlocObserver();
     final AppDatabase database = AppDatabase();
     final BlogDao blogDao = BlogDao(database);
     final ProjectDao projectDao = ProjectDao(database);
@@ -75,7 +78,9 @@ class PortfolioWebsite extends StatefulWidget {
               create: (context) => ProjectsBloc(repository: projectRepository),
             ),
             BlocProvider(
-              create: (context) => AboutBloc(repository: profileRepository),
+              create: (context) => AboutBloc(
+                  profileRepository: profileRepository,
+                  authRepository: authRepository),
             ),
             BlocProvider(
               create: (context) => NavigationBloc(),
@@ -86,6 +91,9 @@ class PortfolioWebsite extends StatefulWidget {
             BlocProvider(
               create: (context) => RegisterBloc(repository: authRepository),
             ),
+            BlocProvider(
+              create: (context) => DescriptionBloc(),
+            )
           ],
           child: PortfolioWebsite(),
         ));
@@ -95,7 +103,7 @@ class PortfolioWebsite extends StatefulWidget {
 class _PortfolioWebsiteState extends State<PortfolioWebsite> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'PortfolioWebsite',
       theme: ThemeSwitcher.of(context).isLightMode
