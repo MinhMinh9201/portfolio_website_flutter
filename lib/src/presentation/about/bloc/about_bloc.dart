@@ -38,7 +38,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     try {
       if (currentState is AboutLoaded) {
         Profile profile = currentState.profile;
-        await profileRepository.insertOrReplace(
+        bool status = await profileRepository.insertOrReplace(
             profile: Profile(
                 email: profile.email,
                 id: profile.id,
@@ -50,37 +50,26 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
                 description: description ?? profile.description),
             username: AppUtils.emailToUsername(email: profile.email));
         profileBloc?.add(SwitchControlProfile(editing: false));
-        yield* _mapLoadToState(
-            username: AppUtils.emailToUsername(email: profile.email));
+        if (status) {
+          yield AboutEditSuccess();
+          yield* _mapLoadToState(
+              username: AppUtils.emailToUsername(email: profile.email));
+        } else
+          yield AboutEditFailure(message: "Error! Please try again later!");
       }
-    } catch (e) {}
+    } catch (e) {
+      yield AboutEditFailure(message: e.toString());
+    }
   }
 
   Stream<AboutState> _mapLoadToState({String username, bool isCanEdit}) async* {
     try {
       final response = await fetchData(username: username);
       print('--------Load $username: ${response?.toJson() ?? "Null"}');
-      if (response == null) {
-        User user = authRepository.user;
-        if (isCanEdit && user != null) {
-          await profileRepository.insertOrReplace(
-              username: username,
-              profile: Profile(
-                id: user?.uid,
-                name: username,
-                image: user?.photoURL,
-                email: user?.email,
-                isDefault: 0,
-                createTime: DateTime.now(),
-                description: "",
-                urls: "",
-              ));
-          yield* _mapLoadToState(username: username, isCanEdit: isCanEdit);
-        } else {
-          yield AboutWithError();
-        }
+      if (response != null || isCanEdit) {
+        yield AboutLoaded(profile: response, canEdit: isCanEdit);
       } else {
-        yield AboutLoaded(profile: response);
+        yield AboutWithError();
       }
     } catch (e) {
       yield AboutWithError();

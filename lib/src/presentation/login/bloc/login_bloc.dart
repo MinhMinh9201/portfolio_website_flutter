@@ -21,10 +21,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final rs = await repository.login(
           email: event.username, password: event.password);
-      print('-----Login ${rs?.toString()}');
       yield LoginState.success(message: "Success!", user: rs.user);
     } catch (e) {
-      print('-----Error: ${e.message}');
       yield LoginState.failure(message: "${e.message}");
     }
   }

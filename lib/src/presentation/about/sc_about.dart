@@ -80,8 +80,17 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Widget _buildContent({BuildContext context, AboutLoaded state}) {
-    Profile profile = state?.profile;
+    final Profile profile = state?.profile;
+    final bool isCanEdit = state?.canEdit ?? false;
     return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (ProfileState old, ProfileState current) {
+        if (old is ProfileLoaded &&
+            current is ProfileLoaded &&
+            old.isEditing != current.isEditing) {
+          return true;
+        } else
+          return false;
+      },
       builder: (context, state) {
         if (state is ProfileLoaded)
           return SingleChildScrollView(
@@ -93,40 +102,44 @@ class _AboutScreenState extends State<AboutScreen> {
                       children: [
                         _buildImage(
                             isLarge: true,
-                            url: profile.image,
+                            url: profile?.image,
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildName(
                             isLarge: true,
-                            name: profile.name,
+                            name: profile?.name ?? username,
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildDescription(
+                            isCanEdit: isCanEdit,
                             isLarge: true,
                             description: profile?.description,
                             editing: state.isEditing),
                         _buildSpace(small: false),
-                        _buildSocial(profile.urls, true, state.isEditing)
+                        _buildSocial(profile?.urls, true, state.isEditing,
+                            isCanEdit: isCanEdit)
                       ],
                     ),
                     small: Column(
                       children: [
                         _buildImage(
                             isLarge: false,
-                            url: profile.image,
+                            url: profile?.image,
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildName(
                             isLarge: false,
-                            name: profile.name,
+                            name: profile?.name ?? username,
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildDescription(
+                            isCanEdit: isCanEdit,
                             isLarge: false,
                             description: profile?.description,
                             editing: state.isEditing),
                         _buildSpace(small: false),
-                        _buildSocial(profile.urls, false, state.isEditing)
+                        _buildSocial(profile?.urls, false, state.isEditing,
+                            isCanEdit: isCanEdit)
                       ],
                     ),
                   )),
@@ -139,7 +152,10 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Widget _buildDescription(
-          {bool isLarge = false, bool editing, String description}) =>
+          {bool isLarge = false,
+          bool editing,
+          String description,
+          bool isCanEdit}) =>
       Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -147,11 +163,14 @@ class _AboutScreenState extends State<AboutScreen> {
         children: [
           Text(
             description == null || description.length == 0
-                ? AppLocalizations.of(context).translate('about.description')
+                ? (isCanEdit
+                    ? AppLocalizations.of(context)
+                        .translate('about.description')
+                    : "")
                 : AppUtils.parseDescriptionToString(description),
             style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
-            textScaleFactor: isLarge ? 1.5 : 1.25,
+            textScaleFactor: isLarge ? 1.75 : 1.35,
           ),
           editing
               ? IconButton(
@@ -162,7 +181,8 @@ class _AboutScreenState extends State<AboutScreen> {
         ],
       );
 
-  Widget _buildSocial(String urls, bool isLarge, bool editing) {
+  Widget _buildSocial(String urls, bool isLarge, bool editing,
+      {bool isCanEdit}) {
     List<Widget> socialButtons = [];
     AppUtils.parseURL(urls).forEach((element) {
       socialButtons.add(_buildFlatButtonURL(model: element));
@@ -174,7 +194,10 @@ class _AboutScreenState extends State<AboutScreen> {
           children: socialButtons.length == 0
               ? [
                   Text(
-                    AppLocalizations.of(context).translate('about.description'),
+                    isCanEdit
+                        ? AppLocalizations.of(context)
+                            .translate('about.description')
+                        : "",
                     style: Theme.of(context).textTheme.caption,
                     textAlign: TextAlign.center,
                     textScaleFactor: isLarge ? 1.5 : 1.25,
@@ -257,29 +280,29 @@ class _AboutScreenState extends State<AboutScreen> {
             )
           : Text(
               name ?? "",
-              textScaleFactor: isLarge ? 3.5 : 3.0,
+              textScaleFactor: isLarge ? 3.5 : 2.5,
             );
 
   Widget _buildImage(
           {bool isLarge = false, String url, bool editing = false}) =>
       SizedBox(
-        height: isLarge ? 200 : 180,
-        width: isLarge ? 200 : 180,
+        height: isLarge ? 200 : 160,
+        width: isLarge ? 200 : 160,
         child: Stack(
           children: [
             CachedNetworkImage(
               imageUrl: url ?? "",
               imageBuilder: (context, image) => CircleAvatar(
-                radius: isLarge ? 100 : 90,
+                radius: isLarge ? 100 : 80,
                 backgroundImage: image,
               ),
               placeholder: (context, url) => SizedBox(
-                height: isLarge ? 200 : 180,
-                width: isLarge ? 200 : 180,
+                height: isLarge ? 200 : 160,
+                width: isLarge ? 200 : 160,
                 child: Center(child: WidgetCircleProgress()),
               ),
               errorWidget: (context, error, url) => CircleAvatar(
-                radius: isLarge ? 100 : 90,
+                radius: isLarge ? 100 : 80,
                 backgroundImage: Image.asset(AppImages.imgAvatarDefault).image,
               ),
             ),

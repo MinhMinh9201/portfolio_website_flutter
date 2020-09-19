@@ -28,7 +28,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       }
       final rs = await repository.register(
           email: event.username, password: event.password);
-      print('-----Register ${rs?.toString()}');
       yield RegisterState.success(message: "Success!", user: rs.user);
     } on FirebaseAuthException catch (e) {
       print('-----Error: ${e.message}');

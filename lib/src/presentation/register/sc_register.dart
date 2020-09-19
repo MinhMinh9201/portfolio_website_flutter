@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _buildSpace(small: true),
                     _buildTitle(),
                     _buildSpace(),
-                    _buildLoginForm(state),
+                    _buildForm(state),
                     _buildSpace(),
                     _buildRegister(),
                     _buildSpace()
@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _buildSpace(small: true),
                     _buildTitle(),
                     _buildSpace(),
-                    _buildLoginForm(state),
+                    _buildForm(state),
                     _buildSpace(),
                     _buildRegister(),
                     _buildSpace()
@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _buildSpace(small: true),
                     _buildTitle(),
                     _buildSpace(),
-                    _buildLoginForm(state),
+                    _buildForm(state),
                     _buildSpace(),
                     _buildRegister(),
                     _buildSpace()
@@ -127,10 +127,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          AppLocalizations.of(context).translate('auth.sign_in_description'),
-          style: Theme.of(context).textTheme.title,
-          textAlign: TextAlign.center,
+        WidgetResponse(
+          large: Text(
+            AppLocalizations.of(context).translate('auth.sign_in_description'),
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+            textScaleFactor: 0.9,
+          ),
+          small: Text(
+            AppLocalizations.of(context).translate('auth.sign_in_description'),
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+            textScaleFactor: 0.75,
+          ),
         ),
         const SizedBox(
           height: 6,
@@ -165,6 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text(
                   '$title',
                   style: Theme.of(context).textTheme.subtitle,
+                  textScaleFactor: 0.9,
                 ),
                 const SizedBox(width: 4),
                 SizedBox(
@@ -196,11 +206,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildTitle() {
     return Container(
       child: Center(
-        child: Text(
-          'REGISTER',
-          style: Theme.of(context).textTheme.title.copyWith(
-              fontWeight: FontWeight.w800,
-              fontFamily: AppStyles.FONT_SHRIKHAND),
+        child: WidgetResponse(
+          large: Text(
+            'REGISTER',
+            style: Theme.of(context).textTheme.title.copyWith(
+                fontWeight: FontWeight.w800,
+                fontFamily: AppStyles.FONT_SHRIKHAND),
+            textScaleFactor: 1,
+          ),
+          small: Text(
+            'REGISTER',
+            style: Theme.of(context).textTheme.title.copyWith(
+                fontWeight: FontWeight.w800,
+                fontFamily: AppStyles.FONT_SHRIKHAND),
+            textScaleFactor: 0.85,
+          ),
         ),
       ),
     );
@@ -210,8 +230,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if ((state.isSubmitting ?? false) || state.isSuccess ?? false)
       return Container(
         color: Colors.black54,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
         child: Center(
           child: Container(
             padding: EdgeInsets.all(24),
@@ -249,7 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             aspectRatio: 1, child: Image.asset(AppImages.imgFirebase)));
   }
 
-  Widget _buildLoginForm(RegisterState state) {
+  Widget _buildForm(RegisterState state) {
     return Column(
       children: [
         _buildEmailInput(),
@@ -274,10 +292,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildRejected(String msg) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      child: Text(
-        '$msg',
-        textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.subtitle,
+      child: WidgetResponse(
+        large: Text(
+          '$msg',
+          textAlign: TextAlign.start,
+          style: Theme.of(context).textTheme.subtitle,
+          textScaleFactor: 1,
+        ),
+        small: Text(
+          '$msg',
+          textAlign: TextAlign.start,
+          style: Theme.of(context).textTheme.subtitle,
+          textScaleFactor: 0.9,
+        ),
       ),
     );
   }
@@ -337,7 +364,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       inputController: _passwordConfirmController,
       hint:
           AppLocalizations.of(context).translate('auth.hint_password_confirm'),
-      obscureText: obscurePassword,
+      obscureText: obscurePasswordConfirm,
       endIcon: IconButton(
         icon: Icon(
           obscurePasswordConfirm
@@ -347,7 +374,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () {
           setState(() {
-            obscurePassword = !obscurePassword;
+            obscurePasswordConfirm = !obscurePasswordConfirm;
           });
         },
       ),

@@ -19,7 +19,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Stream<ProfileState> _mapLoadToState(bool hasAuth, String username) async* {
-    await Future.delayed(Duration(seconds: 1));
     if (hasAuth) {
       User user = repository.user;
       if (username == AppUtils.emailToUsername(email: user.email)) {

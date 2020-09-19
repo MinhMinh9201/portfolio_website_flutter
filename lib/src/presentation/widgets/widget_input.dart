@@ -14,6 +14,7 @@ class WidgetInput extends StatefulWidget {
   final double width;
   final double paddingHorizontal;
   final TextStyle style;
+  final TextStyle hintStyle;
   final double radiusBorder;
   final int maxLines;
   final double elevation;
@@ -34,6 +35,7 @@ class WidgetInput extends StatefulWidget {
       this.endIcon,
       this.elevation,
       this.style,
+      this.hintStyle,
       this.radiusBorder,
       this.width,
       this.paddingHorizontal,
@@ -76,8 +78,10 @@ class _WidgetInputState extends State<WidgetInput> {
                   textAlign: widget.textAlign ?? TextAlign.left,
                   obscureText: widget.obscureText,
                   decoration: InputDecoration.collapsed(
-                    hintText: widget.hint,
-                  ),
+                      hintText: widget.hint,
+                      hintStyle: widget.hintStyle ??
+                          AppStyles.DEFAULT_SMALL
+                              .copyWith(fontStyle: FontStyle.italic)),
                 ),
               ),
               widget.endIcon ?? const SizedBox()

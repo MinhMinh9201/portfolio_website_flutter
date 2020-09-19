@@ -123,10 +123,19 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          AppLocalizations.of(context).translate('auth.sign_up_description'),
-          style: Theme.of(context).textTheme.title,
-          textAlign: TextAlign.center,
+        WidgetResponse(
+          large: Text(
+            AppLocalizations.of(context).translate('auth.sign_up_description'),
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+            textScaleFactor: 0.9,
+          ),
+          small: Text(
+            AppLocalizations.of(context).translate('auth.sign_up_description'),
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+            textScaleFactor: 0.75,
+          ),
         ),
         const SizedBox(
           height: 6,
@@ -152,6 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       AppLocalizations.of(context).translate('auth.sign_up'),
                       style: Theme.of(context).textTheme.subtitle,
+                      textScaleFactor: 0.9,
                     ),
                     const SizedBox(width: 4),
                     SizedBox(
@@ -186,8 +196,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if ((state.isSubmitting ?? false) || state.isSuccess ?? false)
       return Container(
         color: Colors.black54,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
         child: Center(
           child: Container(
             padding: EdgeInsets.all(24),
@@ -228,11 +236,21 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildTitle() {
     return Container(
       child: Center(
-        child: Text(
-          'LOGIN',
-          style: Theme.of(context).textTheme.title.copyWith(
-              fontWeight: FontWeight.w800,
-              fontFamily: AppStyles.FONT_SHRIKHAND),
+        child: WidgetResponse(
+          large: Text(
+            'LOGIN',
+            style: Theme.of(context).textTheme.title.copyWith(
+                fontWeight: FontWeight.w800,
+                fontFamily: AppStyles.FONT_SHRIKHAND),
+            textScaleFactor: 1,
+          ),
+          small: Text(
+            'LOGIN',
+            style: Theme.of(context).textTheme.title.copyWith(
+                fontWeight: FontWeight.w800,
+                fontFamily: AppStyles.FONT_SHRIKHAND),
+            textScaleFactor: 0.85,
+          ),
         ),
       ),
     );
@@ -258,13 +276,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildRejected(String msg) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Text(
-        '$msg',
-        textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.subtitle,
-      ),
-    );
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: WidgetResponse(
+          large: Text(
+            '$msg',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle,
+            textScaleFactor: 1,
+          ),
+          small: Text(
+            '$msg',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle,
+            textScaleFactor: 0.9,
+          ),
+        ));
   }
 
   Widget _buildButton() {

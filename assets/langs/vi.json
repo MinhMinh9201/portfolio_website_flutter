@@ -21,13 +21,14 @@
     "about.save" :"Lưu",
     "about.hint_name" :"Tên ...",
 
-    "about.description" :"Một chút mô tả ...",
+    "about.description" :"...",
     "about.hint_description" :"Từ khóa ...",
     "about.description.title" : "Chỉnh sửa miêu tả ngắn của bạn",
     "about.description.tutorial" : "Hướng dẫn",
     "about.description.example" : "Ví dụ",
     "about.description.help" : "Thêm một mô tả bằng cách ấn vào button (+) và nhập nội dung... \nChúng ta kết thúc chỉnh sửa với nút \"Save\".",
 
+    "about.social" :"",
     "about.hint_social" :"Từ khóa ...",
     "about.social.title" : "Chỉnh sửa các liên kết tới mạng xã hội của bạn",
     "about.social.tutorial" : "Hướng dẫn",

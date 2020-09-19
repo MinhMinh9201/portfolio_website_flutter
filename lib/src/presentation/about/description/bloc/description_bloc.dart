@@ -14,12 +14,16 @@ class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
       yield* _mapInitToState(event.aboutBloc);
     } else if (event is SaveDescription) {
       yield* _mapSaveToState(event.aboutBloc, event.description);
+    } else if (event is SavedDescription) {
+      yield DescriptionSaved();
+    } else if (event is ErrorSaveDescription) {
+      yield DescriptionSaveError();
     }
   }
 
   Stream<DescriptionState> _mapInitToState(AboutBloc aboutBloc) async* {
     final aboutState = aboutBloc.state as AboutLoaded;
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
     yield DescriptionInitialized(description: aboutState?.profile?.description);
   }
 

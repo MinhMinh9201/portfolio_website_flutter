@@ -51,10 +51,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               _buildImage(),
               _buildSpace(),
               _buildSearch(),
-              _buildSpace(),
-              _buildSpace(),
-              _buildSpace(),
-              _buildSpace(),
+              _buildSpaces(),
               _buildOwner(),
               _buildSpace(),
             ],
@@ -67,18 +64,36 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget _buildOwner() {
     return Column(
       children: [
-        Text(
-          AppLocalizations.of(context).translate('app.slogan'),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.title,
+        WidgetResponse(
+          large: Text(
+            AppLocalizations.of(context).translate('app.slogan'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.title,
+            textScaleFactor: 1,
+          ),
+          small: Text(
+            AppLocalizations.of(context).translate('app.slogan'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.title,
+            textScaleFactor: 0.9,
+          ),
         ),
         const SizedBox(
           height: 4,
         ),
-        Text(
-          AppLocalizations.of(context).translate('app.description'),
-          style: Theme.of(context).textTheme.subtitle,
-          textAlign: TextAlign.center,
+        WidgetResponse(
+          large: Text(
+            AppLocalizations.of(context).translate('app.description'),
+            style: Theme.of(context).textTheme.subtitle,
+            textAlign: TextAlign.center,
+            textScaleFactor: 1,
+          ),
+          small: Text(
+            AppLocalizations.of(context).translate('app.description'),
+            style: Theme.of(context).textTheme.subtitle,
+            textAlign: TextAlign.center,
+            textScaleFactor: 0.9,
+          ),
         ),
         const SizedBox(
           height: 10,
@@ -136,6 +151,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
+  Widget _buildSpaces() => WidgetResponse(
+        large: const SizedBox(height: 75),
+        small: const SizedBox(
+          height: 40,
+        ),
+      );
+
   Widget _buildSpace() => const SizedBox(
         height: 20,
       );
@@ -182,7 +204,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           inputController: _controller,
           hint:
               AppLocalizations.of(context).translate('navigation.hint_search'),
-          height: AppValues.INPUT_FORM_HEIGHT * 1.25,
+          height: AppValues.INPUT_FORM_HEIGHT * 1.2,
           endIcon: IconButton(
             icon: Icon(Icons.search),
             onPressed: () {},

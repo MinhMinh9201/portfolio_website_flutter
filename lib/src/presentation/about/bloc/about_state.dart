@@ -11,11 +11,17 @@ class AboutLoading extends AboutState {}
 
 class AboutEditSuccess extends AboutState {}
 
-class AboutEditFailure extends AboutState {}
+class AboutEditFailure extends AboutState {
+  final String message;
+  const AboutEditFailure({this.message});
+  @override
+  List<Object> get props => [message];
+}
 
 class AboutLoaded extends AboutState {
   final Profile profile;
-  AboutLoaded({this.profile});
+  final bool canEdit;
+  AboutLoaded({this.profile, this.canEdit});
   @override
   List<Object> get props => [profile];
 }

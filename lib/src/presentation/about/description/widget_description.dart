@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:portfolio_website/src/configs/configs.dart';
-import 'package:portfolio_website/src/presentation/about/bloc/about_bloc.dart';
+import 'package:portfolio_website/src/presentation/about/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/about/description/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/widgets/widgets.dart';
 import 'package:portfolio_website/src/utils/utils.dart';
+import 'package:toast/toast.dart';
 
 class WidgetDescriptionEditAbout extends StatelessWidget {
   final Color grey = AppColors.grey;
   final Color black45 = Colors.black45;
+  final String keyData = 'data';
+  final String keyStatus = 'status';
   Map<String, dynamic> result = {};
   @override
   Widget build(BuildContext context) {
@@ -30,12 +33,16 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
           borderRadius: BorderRadius.circular(16), color: Colors.white),
       child: Stack(
         children: [
-          BlocListener<DescriptionBloc, DescriptionState>(
+          BlocListener<AboutBloc, AboutState>(
             listener: (context, state) {
-              if (state is DescriptionSaved) {
+              if (state is AboutEditSuccess) {
+                BlocProvider.of<DescriptionBloc>(context)
+                    .add(SavedDescription());
                 Future.delayed(Duration(seconds: 1), () {
                   Navigator.pop(context);
                 });
+              } else if (state is AboutEditFailure) {
+                Toast.show(state.message, context);
               }
             },
             child: BlocBuilder<DescriptionBloc, DescriptionState>(
@@ -120,7 +127,10 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  print(result.toString());
+                  BlocProvider.of<DescriptionBloc>(context).add(SaveDescription(
+                      aboutBloc: BlocProvider.of<AboutBloc>(context),
+                      description:
+                          AppUtils.listToDescription(result[keyData])));
                 }),
           ),
           const SizedBox(

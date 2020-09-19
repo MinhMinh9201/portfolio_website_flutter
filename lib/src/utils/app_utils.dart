@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:portfolio_website/src/resource/database/app_database.dart';
 import 'package:portfolio_website/src/resource/model/model.dart';
 
 class AppUtils {
@@ -33,6 +31,19 @@ class AppUtils {
       else
         description += "${strings[i]}";
     }
+    return description;
+  }
+
+  static String listToDescription(List<String> data) {
+    String description = '';
+    if (data == null || data.length == 0) return description;
+    for (int i = 0; i < data.length; i++) {
+      if (i == data.length - 1)
+        description += "${data[i]}";
+      else
+        description += "${data[i]},";
+    }
+    print('------|$description');
     return description;
   }
 

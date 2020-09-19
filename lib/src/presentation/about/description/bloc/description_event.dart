@@ -19,3 +19,12 @@ class SaveDescription extends DescriptionEvent {
   @override
   List<Object> get props => [description];
 }
+
+class SavedDescription extends DescriptionEvent {}
+
+class ErrorSaveDescription extends DescriptionEvent {
+  final String message;
+  const ErrorSaveDescription({this.message});
+  @override
+  List<Object> get props => [message];
+}

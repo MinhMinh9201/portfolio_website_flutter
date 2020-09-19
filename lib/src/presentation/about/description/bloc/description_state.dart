@@ -16,3 +16,10 @@ class DescriptionInitialized extends DescriptionState {
 }
 
 class DescriptionSaved extends DescriptionState {}
+
+class DescriptionSaveError extends DescriptionState {
+  final String message;
+  const DescriptionSaveError({this.message});
+  @override
+  List<Object> get props => [message];
+}
