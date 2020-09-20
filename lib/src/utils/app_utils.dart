@@ -18,10 +18,18 @@ class AppUtils {
     return username;
   }
 
+  //Just gmail
+  static String usernameToEmail({String username}) {
+    if (username == null) return null;
+    return '${username.substring(1)}@gmail.com';
+  }
+
   //Demo: "Flutter,Android,IOS,Music,Esport,Traving"
   static String parseDescriptionToString(String data) {
     if (data == null) return "";
     List<String> strings = data.split(',').toList();
+    strings.removeWhere(
+        (element) => element == null || element.trim().length == 0);
     String description = '';
     for (int i = 0; i < strings.length; i++) {
       if (i == (strings.length / 2).floor()) {
@@ -38,10 +46,12 @@ class AppUtils {
     String description = '';
     if (data == null || data.length == 0) return description;
     for (int i = 0; i < data.length; i++) {
-      if (i == data.length - 1)
-        description += "${data[i]}";
-      else
-        description += "${data[i]},";
+      if (data[i] != null && data[i].trim().length != 0) {
+        if (i == data.length - 1)
+          description += "${data[i]}";
+        else
+          description += "${data[i]},";
+      }
     }
     print('------|$description');
     return description;
@@ -60,6 +70,7 @@ class AppUtils {
     List<UrlSocialModel> socials;
     try {
       List<String> list = data.split("||");
+      list.removeWhere((element) => element == null || element.length == 0);
       socials = list.map((e) {
         return UrlSocialModel.fromJson(jsonDecode(e) as Map);
       }).toList();
@@ -68,5 +79,19 @@ class AppUtils {
       socials = [];
     }
     return socials;
+  }
+
+  static String mapURL(List<UrlSocialModel> data) {
+    if (data == null || data.length == 0) return "";
+    String urls = "";
+    for (int i = 0; i < data.length; i++) {
+      if (data[i] != null) {
+        if (i < data.length - 1)
+          urls += '${data[i].toString()}||';
+        else
+          urls += '${data[i].toString()}';
+      }
+    }
+    return urls;
   }
 }

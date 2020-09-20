@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:portfolio_website/src/configs/configs.dart';
 import 'package:portfolio_website/src/presentation/about/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/about/description/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/presentation.dart';
 import 'package:portfolio_website/src/presentation/widgets/widgets.dart';
 import 'package:portfolio_website/src/utils/utils.dart';
 import 'package:toast/toast.dart';
@@ -14,6 +15,10 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
   final String keyData = 'data';
   final String keyStatus = 'status';
   Map<String, dynamic> result = {};
+
+  final String username;
+  WidgetDescriptionEditAbout({this.username});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +32,13 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
         InitializeDescription(aboutBloc: BlocProvider.of<AboutBloc>(context)));
 
     return Container(
-      margin: const EdgeInsets.all(45),
+      margin: const EdgeInsets.all(65),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16), color: Colors.white),
+          borderRadius: BorderRadius.circular(16),
+          color: ThemeSwitcher.of(context).isLightMode
+              ? Colors.white
+              : Colors.white24),
       child: Stack(
         children: [
           BlocListener<AboutBloc, AboutState>(
@@ -68,7 +76,7 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
               },
             ),
           ),
-          _buildClose(context, top: -15, right: -15)
+          _buildClose(context)
         ],
       ),
     );
@@ -77,66 +85,73 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
   Widget _buildContent(String description, BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          Container(
-            child: Text(
-              AppLocalizations.of(context).translate('about.description.title'),
-              style: AppStyles.DEFAULT_MEDIUM_BOLD,
-              textAlign: TextAlign.center,
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 8,
             ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Container(
-            child: Text(
-              AppLocalizations.of(context).translate('about.description.help'),
-              style: AppStyles.DEFAULT_SMALL.copyWith(color: black45),
-              textAlign: TextAlign.center,
+            Container(
+              child: Text(
+                AppLocalizations.of(context)
+                    .translate('about.description.title'),
+                style: AppStyles.DEFAULT_MEDIUM_BOLD,
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          _buildWrapAutomate(description, context),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context).translate('about.save'),
-                      style: AppStyles.DEFAULT_SMALL,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Icon(Icons.save),
-                  ],
-                ),
-                onPressed: () {
-                  BlocProvider.of<DescriptionBloc>(context).add(SaveDescription(
-                      aboutBloc: BlocProvider.of<AboutBloc>(context),
-                      description:
-                          AppUtils.listToDescription(result[keyData])));
-                }),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-        ],
+            const SizedBox(
+              height: 8,
+            ),
+            Container(
+              child: Text(
+                AppLocalizations.of(context)
+                    .translate('about.description.help'),
+                style: AppStyles.DEFAULT_SMALL,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            _buildWrapAutomate(description, context),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).translate('about.save'),
+                        style: AppStyles.DEFAULT_SMALL,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Icon(Icons.save),
+                    ],
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<DescriptionBloc>(context).add(
+                        SaveDescription(
+                            username: username,
+                            aboutBloc: BlocProvider.of<AboutBloc>(context),
+                            description:
+                                AppUtils.listToDescription(result[keyData])));
+                  }),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -163,14 +178,14 @@ class WidgetDescriptionEditAbout extends StatelessWidget {
       width: 180,
       onChanged: onChanged,
       radiusBorder: 16,
-      paddingLeftMore: 12,
       textAlign: TextAlign.center,
       style: AppStyles.DEFAULT_MEDIUM_BOLD,
       hint: AppLocalizations.of(context).translate('about.hint_description'),
     );
   }
 
-  Widget _buildClose(BuildContext context, {double top = 0, double right = 0}) {
+  Widget _buildClose(BuildContext context,
+      {double top = -10, double right = -20}) {
     return Positioned(
       top: top,
       right: right,

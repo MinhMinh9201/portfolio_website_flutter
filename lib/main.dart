@@ -12,6 +12,7 @@ import 'package:portfolio_website/src/presentation/projects/bloc/bloc.dart';
 
 import 'src/presentation/about/bloc/bloc.dart';
 import 'src/presentation/about/description/bloc/bloc.dart';
+import 'src/presentation/about/socials/bloc/bloc.dart';
 import 'src/presentation/navigation/bloc/bloc.dart';
 import 'src/presentation/profile/bloc/bloc.dart';
 import 'src/presentation/register/bloc/bloc.dart';
@@ -93,6 +94,9 @@ class PortfolioWebsite extends StatefulWidget {
             ),
             BlocProvider(
               create: (context) => DescriptionBloc(),
+            ),
+            BlocProvider(
+              create: (context) => SocialBloc(),
             )
           ],
           child: PortfolioWebsite(),
@@ -131,7 +135,7 @@ class _PortfolioWebsiteState extends State<PortfolioWebsite> {
         return supportedLocales.first;
       },
       locale: Locale('vi', 'VN'),
-      home: NavigationScreen(),
+      home: SplashScreen(),
       onGenerateRoute: Routers.generateRoute,
     );
   }

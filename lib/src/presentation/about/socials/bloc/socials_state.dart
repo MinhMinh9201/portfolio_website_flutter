@@ -15,4 +15,4 @@ class SocialInitialized extends SocialState {
   List<Object> get props => [urls];
 }
 
-class SocialSaving extends SocialState {}
+class SocialSaved extends SocialState {}

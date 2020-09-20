@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:portfolio_website/src/configs/configs.dart';
+import 'package:portfolio_website/src/presentation/about/socials/widget_socials.dart';
 import 'package:portfolio_website/src/presentation/profile/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/widgets/widget_circle_progress.dart';
 import 'package:portfolio_website/src/presentation/widgets/widget_error_state.dart';
@@ -67,6 +68,14 @@ class _AboutScreenState extends State<AboutScreen> {
                 LoadAbout(username: username, canEdit: stateProfile.isCanEdit));
           },
         );
+      } else if (state is AboutEditSuccess) {
+        return WidgetErrorState(
+          message: AppLocalizations.of(context).translate('app.success'),
+        );
+      } else if (state is AboutEditFailure) {
+        return WidgetErrorState(
+          message: AppLocalizations.of(context).translate('app.failure'),
+        );
       } else {
         return WidgetErrorState(
           refresh: () async {
@@ -83,14 +92,6 @@ class _AboutScreenState extends State<AboutScreen> {
     final Profile profile = state?.profile;
     final bool isCanEdit = state?.canEdit ?? false;
     return BlocBuilder<ProfileBloc, ProfileState>(
-      buildWhen: (ProfileState old, ProfileState current) {
-        if (old is ProfileLoaded &&
-            current is ProfileLoaded &&
-            old.isEditing != current.isEditing) {
-          return true;
-        } else
-          return false;
-      },
       builder: (context, state) {
         if (state is ProfileLoaded)
           return SingleChildScrollView(
@@ -137,7 +138,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             isLarge: false,
                             description: profile?.description,
                             editing: state.isEditing),
-                        _buildSpace(small: false),
+                        _buildSpace(small: true),
                         _buildSocial(profile?.urls, false, state.isEditing,
                             isCanEdit: isCanEdit)
                       ],
@@ -156,27 +157,46 @@ class _AboutScreenState extends State<AboutScreen> {
           bool editing,
           String description,
           bool isCanEdit}) =>
-      Row(
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            description == null || description.length == 0
-                ? (isCanEdit
-                    ? AppLocalizations.of(context)
-                        .translate('about.description')
-                    : "")
-                : AppUtils.parseDescriptionToString(description),
-            style: Theme.of(context).textTheme.caption,
-            textAlign: TextAlign.center,
-            textScaleFactor: isLarge ? 1.75 : 1.35,
-          ),
+          description == null || description.length == 0
+              ? (editing
+                  ? Text(
+                      AppLocalizations.of(context)
+                          .translate('about.description'),
+                      style: Theme.of(context).textTheme.caption,
+                      textAlign: TextAlign.center,
+                      textScaleFactor: isLarge ? 1.65 : 1.35,
+                    )
+                  : const SizedBox())
+              : Text(
+                  AppUtils.parseDescriptionToString(description),
+                  style: Theme.of(context).textTheme.caption,
+                  textAlign: TextAlign.center,
+                  textScaleFactor: isLarge ? 1.65 : 1.35,
+                ),
           editing
-              ? IconButton(
-                  icon: Icon(Icons.edit),
+              ? FlatButton.icon(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
                   onPressed: () => AppDialogs.createNotify(
-                      widget: WidgetDescriptionEditAbout()))
+                          widget: WidgetDescriptionEditAbout(
+                        username: username,
+                      )),
+                  icon: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: FittedBox(
+                      child: Icon(Icons.edit),
+                    ),
+                  ),
+                  label: Text(
+                    AppLocalizations.of(context).translate('app.edit'),
+                    textScaleFactor: 0.8,
+                  ))
               : SizedBox()
         ],
       );
@@ -193,15 +213,32 @@ class _AboutScreenState extends State<AboutScreen> {
           mainAxisSize: MainAxisSize.min,
           children: socialButtons.length == 0
               ? [
-                  Text(
-                    isCanEdit
-                        ? AppLocalizations.of(context)
-                            .translate('about.description')
-                        : "",
-                    style: Theme.of(context).textTheme.caption,
-                    textAlign: TextAlign.center,
-                    textScaleFactor: isLarge ? 1.5 : 1.25,
-                  )
+                  editing
+                      ? Column(
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate('about.social'),
+                              style: Theme.of(context).textTheme.caption,
+                              textAlign: TextAlign.center,
+                              textScaleFactor: isLarge ? 1.45 : 1.15,
+                            ),
+                            Wrap(children: [
+                              _buildFlatButton(
+                                  model: UrlSocialModel(
+                                      icon: AppImages.icGithub,
+                                      name: "GitHub")),
+                              _buildFlatButton(
+                                  model: UrlSocialModel(
+                                      icon: AppImages.icMediumLight,
+                                      name: "Medium")),
+                              _buildFlatButton(
+                                  model: UrlSocialModel(
+                                      icon: AppImages.icFB, name: "Facebook"))
+                            ])
+                          ],
+                        )
+                      : SizedBox()
                 ]
               : [
                   Wrap(
@@ -221,17 +258,40 @@ class _AboutScreenState extends State<AboutScreen> {
                   )
                 ],
         ),
-        const SizedBox(
-          height: 12,
-        ),
         editing
-            ? IconButton(
-                icon: Icon(Icons.edit),
+            ? FlatButton.icon(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4)),
                 onPressed: () => AppDialogs.createNotify(
-                    widget: WidgetDescriptionEditAbout()))
-            : SizedBox()
+                        widget: WidgetSocialEditAbout(
+                      username: username,
+                    )),
+                icon: SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: FittedBox(
+                    child: Icon(Icons.edit),
+                  ),
+                ),
+                label: Text(AppLocalizations.of(context).translate('app.edit')))
+            : SizedBox(),
+        const SizedBox(
+          height: 20,
+        ),
       ],
     );
+  }
+
+  Widget _buildFlatButton({UrlSocialModel model, isDemo}) {
+    return FlatButton.icon(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        onPressed: () {},
+        icon: SizedBox(
+          width: 20,
+          height: 20,
+          child: Image.asset(model.icon),
+        ),
+        label: Text(model.name ?? ""));
   }
 
   Widget _buildFlatButtonURL({UrlSocialModel model}) {
@@ -264,9 +324,10 @@ class _AboutScreenState extends State<AboutScreen> {
               paddingLeftMore: 12,
               textAlign: TextAlign.center,
               style: AppStyles.DEFAULT_LARGE,
+              hintStyle: AppStyles.DEFAULT_MEDIUM
+                  .copyWith(fontStyle: FontStyle.italic),
               endIcon: IconButton(
-                icon:
-                    Icon(MaterialCommunityIcons.check, color: AppColors.black),
+                icon: Icon(MaterialCommunityIcons.check),
                 onPressed: () {
                   BlocProvider.of<AboutBloc>(context).add(EditAbout(
                       name: _nameController.text.trim().length != 0

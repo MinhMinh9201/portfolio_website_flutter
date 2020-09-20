@@ -15,10 +15,16 @@ class LoadAbout extends AboutEvent {
 
 class EditAbout extends AboutEvent {
   final ProfileBloc profileBloc;
+  final String username;
   final String name;
   final String description;
   final String image;
   final String urls;
   const EditAbout(
-      {this.name, this.description, this.image, this.urls, this.profileBloc});
+      {this.name,
+      this.description,
+      this.image,
+      this.urls,
+      this.profileBloc,
+      this.username});
 }

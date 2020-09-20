@@ -55,6 +55,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/langs/
+    - assets/backgrounds/
 
   fonts:
     - family: Shrikhand

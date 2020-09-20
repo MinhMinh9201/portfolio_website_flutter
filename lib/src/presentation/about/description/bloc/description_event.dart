@@ -14,10 +14,11 @@ class InitializeDescription extends DescriptionEvent {
 
 class SaveDescription extends DescriptionEvent {
   final String description;
+  final String username;
   final AboutBloc aboutBloc;
-  const SaveDescription({this.description, this.aboutBloc});
+  const SaveDescription({this.description, this.aboutBloc, this.username});
   @override
-  List<Object> get props => [description];
+  List<Object> get props => [description, username];
 }
 
 class SavedDescription extends DescriptionEvent {}

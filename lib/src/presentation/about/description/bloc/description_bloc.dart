@@ -1,9 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:portfolio_website/src/presentation/about/bloc/about_bloc.dart';
-import 'package:portfolio_website/src/presentation/about/bloc/about_event.dart';
-import 'package:portfolio_website/src/presentation/about/bloc/about_state.dart';
-import 'package:portfolio_website/src/presentation/about/description/bloc/description_event.dart';
-import 'package:portfolio_website/src/presentation/about/description/bloc/description_state.dart';
+import 'package:portfolio_website/src/presentation/about/bloc/bloc.dart';
+
+import 'bloc.dart';
 
 class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
   DescriptionBloc() : super(DescriptionLoading());
@@ -22,8 +20,8 @@ class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
   }
 
   Stream<DescriptionState> _mapInitToState(AboutBloc aboutBloc) async* {
+    await Future.delayed(Duration(milliseconds: 500));
     final aboutState = aboutBloc.state as AboutLoaded;
-    await Future.delayed(Duration(seconds: 1));
     yield DescriptionInitialized(description: aboutState?.profile?.description);
   }
 

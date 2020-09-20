@@ -19,6 +19,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           username: event.username, isCanEdit: event.canEdit);
     } else if (event is EditAbout) {
       yield* _mapEditProfileToState(
+          username: event.username,
           profileBloc: event.profileBloc,
           name: event.name,
           description: event.description,
@@ -29,6 +30,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
   Stream<AboutState> _mapEditProfileToState(
       {String name,
+      String username,
       String description,
       String image,
       String urls,
@@ -38,27 +40,28 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     try {
       if (currentState is AboutLoaded) {
         Profile profile = currentState.profile;
+        User user = authRepository.user;
         bool status = await profileRepository.insertOrReplace(
             profile: Profile(
-                email: profile.email,
-                id: profile.id,
-                isDefault: profile.isDefault,
-                image: image ?? profile.image,
-                urls: urls ?? profile.urls,
-                name: name ?? profile.name,
-                createTime: profile.createTime,
-                description: description ?? profile.description),
-            username: AppUtils.emailToUsername(email: profile.email));
+                email: profile?.email ??
+                    AppUtils.usernameToEmail(username: username),
+                id: profile?.id ?? user?.uid,
+                isDefault: profile?.isDefault ?? 0,
+                image: image ?? profile?.image ?? "",
+                urls: urls ?? profile?.urls ?? "",
+                name: name ?? profile?.name ?? username,
+                createTime: profile?.createTime ?? DateTime.now(),
+                description: description ?? profile?.description ?? ""),
+            username: username);
         profileBloc?.add(SwitchControlProfile(editing: false));
         if (status) {
           yield AboutEditSuccess();
-          yield* _mapLoadToState(
-              username: AppUtils.emailToUsername(email: profile.email));
         } else
           yield AboutEditFailure(message: "Error! Please try again later!");
+        yield* _mapLoadToState(username: username);
       }
     } catch (e) {
-      yield AboutEditFailure(message: e.toString());
+      yield AboutWithError(message: e.toString());
     }
   }
 
@@ -72,7 +75,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         yield AboutWithError();
       }
     } catch (e) {
-      yield AboutWithError();
+      yield AboutWithError(message: e.toString());
     }
   }
 

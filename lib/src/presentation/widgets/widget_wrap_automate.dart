@@ -4,6 +4,9 @@ typedef Widget FunctionToWidget(Function action);
 typedef Widget DataToWidget(data, Function action(data));
 
 class WidgetWrapAutomate<T> extends StatefulWidget {
+  static final String keyData = 'data';
+  static final String keyStatus = 'status';
+
   final Axis axis;
   final double spacing;
   final double runSpaceing;
@@ -30,6 +33,7 @@ class WidgetWrapAutomate<T> extends StatefulWidget {
       this.widgetMore})
       : assert(widgetChild != null),
         assert(data != null),
+        assert(result != null),
         super(key: key);
 
   @override
@@ -50,6 +54,7 @@ class _WidgetWrapAutomateState<T> extends State<WidgetWrapAutomate> {
       }));
       values.add(widget.data[i]);
     }
+    widget.result[WidgetWrapAutomate.keyData] = values;
     if (widget.widgetMore != null)
       children.add(widget.widgetMore(createWidget));
     else
@@ -57,9 +62,8 @@ class _WidgetWrapAutomateState<T> extends State<WidgetWrapAutomate> {
   }
 
   void reactionChanged(T value, int index) {
-    print('------|$index - $value|-------');
     values[index] = value;
-    widget.result['data'] = values;
+    widget.result[WidgetWrapAutomate.keyData] = values;
   }
 
   void createWidget() {
