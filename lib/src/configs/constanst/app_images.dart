@@ -11,6 +11,7 @@ class AppImages {
   static final String icSignUp = 'assets/images/ic_signup.png';
   static final String icPaypal = 'assets/images/ic_paypal.png';
   static final String icAvatarMinhMinh = 'assets/images/ic_minhminh.png';
+  static final String icAddPhoto = 'assets/images/ic_add_photo.png';
 
   static final String imgFirebase = 'assets/images/img_firebase.png';
   static final String imgAvatarDefault = 'assets/images/img_avatar_default.png';

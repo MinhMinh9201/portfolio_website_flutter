@@ -30,16 +30,16 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  Future initData() async {
-    try {
-      AppDefautls.projects.forEach((element) {
-        repository.insert(project: element);
-      });
-    } catch (e) {
-      print('-----------------Error');
-      print(e);
-    }
-  }
+  // Future initData() async {
+  //   try {
+  //     AppDefautls.projects.forEach((element) {
+  //       repository.insert(project: element);
+  //     });
+  //   } catch (e) {
+  //     print('-----------------Error');
+  //     print(e);
+  //   }
+  // }
 
   Future<List<Project>> fetchData(String username) async {
     try {

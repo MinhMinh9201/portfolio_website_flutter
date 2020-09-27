@@ -90,7 +90,6 @@ class _AboutScreenState extends State<AboutScreen> {
 
   Widget _buildContent({BuildContext context, AboutLoaded state}) {
     final Profile profile = state?.profile;
-    final bool isCanEdit = state?.canEdit ?? false;
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         if (state is ProfileLoaded)
@@ -112,13 +111,13 @@ class _AboutScreenState extends State<AboutScreen> {
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildDescription(
-                            isCanEdit: isCanEdit,
+                            isCanEdit: state?.isCanEdit,
                             isLarge: true,
                             description: profile?.description,
                             editing: state.isEditing),
                         _buildSpace(small: false),
                         _buildSocial(profile?.urls, true, state.isEditing,
-                            isCanEdit: isCanEdit)
+                            isCanEdit: state?.isCanEdit)
                       ],
                     ),
                     small: Column(
@@ -134,13 +133,13 @@ class _AboutScreenState extends State<AboutScreen> {
                             editing: state.isEditing),
                         _buildSpace(),
                         _buildDescription(
-                            isCanEdit: isCanEdit,
+                            isCanEdit: state?.isCanEdit,
                             isLarge: false,
                             description: profile?.description,
                             editing: state.isEditing),
                         _buildSpace(small: true),
                         _buildSocial(profile?.urls, false, state.isEditing,
-                            isCanEdit: isCanEdit)
+                            isCanEdit: state?.isCanEdit)
                       ],
                     ),
                   )),

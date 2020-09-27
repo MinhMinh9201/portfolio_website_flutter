@@ -41,20 +41,22 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget _buildBody() {
     return Container(
       padding: EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildSpace(),
-              _buildImage(),
-              _buildSpace(),
-              _buildSearch(),
-              _buildSpaces(),
-              _buildOwner(),
-              _buildSpace(),
-            ],
+      child: Center(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildSpace(),
+                _buildImage(),
+                _buildSpace(),
+                _buildSearch(),
+                _buildSpaces(),
+                _buildOwner(),
+                _buildSpace(),
+              ],
+            ),
           ),
         ),
       ),

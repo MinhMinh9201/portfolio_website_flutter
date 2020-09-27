@@ -12,6 +12,13 @@ class AppUtils {
     return data['data'] ?? {};
   }
 
+  static Map<String, dynamic> parseDataWithID(
+      Map<String, dynamic> data, String id) {
+    Map<String, dynamic> temp = data['data'] ?? {};
+    temp['id'] = id;
+    return temp;
+  }
+
   static String emailToUsername({String email}) {
     if (email == null) return "";
     String username = "@${email.substring(0, email.indexOf("@"))}";
@@ -85,7 +92,7 @@ class AppUtils {
     if (data == null || data.length == 0) return "";
     String urls = "";
     for (int i = 0; i < data.length; i++) {
-      if (data[i] != null) {
+      if (data[i] != null && data[i].name != null && data[i].name.length != 0) {
         if (i < data.length - 1)
           urls += '${data[i].toString()}||';
         else

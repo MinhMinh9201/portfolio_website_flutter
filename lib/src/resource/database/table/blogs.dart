@@ -1,7 +1,7 @@
 import 'package:moor/moor.dart';
 
 class Blogs extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text()();
 
   TextColumn get title => text()();
 
@@ -14,4 +14,7 @@ class Blogs extends Table {
   TextColumn get url => text()();
 
   DateTimeColumn get createTime => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

@@ -13,6 +13,7 @@ class WidgetInput extends StatefulWidget {
   final double height;
   final double width;
   final double paddingHorizontal;
+  final double paddingVertical;
   final TextStyle style;
   final TextStyle hintStyle;
   final double radiusBorder;
@@ -39,6 +40,7 @@ class WidgetInput extends StatefulWidget {
       this.radiusBorder,
       this.width,
       this.paddingHorizontal,
+      this.paddingVertical,
       this.height});
 
   @override
@@ -57,8 +59,9 @@ class _WidgetInputState extends State<WidgetInput> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.radiusBorder ?? 20)),
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: widget.paddingHorizontal ?? 25),
+          padding: EdgeInsets.symmetric(
+              horizontal: widget.paddingHorizontal ?? 25,
+              vertical: widget.paddingVertical ?? 0),
           child: Row(
             children: [
               SizedBox(

@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:portfolio_website/src/configs/configs.dart';
 import 'package:portfolio_website/src/presentation/blog/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/blog/editer/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/login/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/presentation.dart';
 import 'package:portfolio_website/src/presentation/projects/bloc/bloc.dart';
@@ -97,6 +98,9 @@ class PortfolioWebsite extends StatefulWidget {
             ),
             BlocProvider(
               create: (context) => SocialBloc(),
+            ),
+            BlocProvider(
+              create: (context) => BlogEditerBloc(),
             )
           ],
           child: PortfolioWebsite(),

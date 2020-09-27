@@ -25,7 +25,7 @@ class BlogRepository {
           '${username ?? AppUtils.emailToUsername(email: AppDefautls.email)}');
       final query = await col.get();
       final blogs = query.docs
-          .map((e) => Blog.fromJson(AppUtils.parseData(e.data())))
+          .map((e) => Blog.fromJson(AppUtils.parseDataWithID(e.data(), e.id)))
           .toList();
       return blogs;
     } catch (e) {

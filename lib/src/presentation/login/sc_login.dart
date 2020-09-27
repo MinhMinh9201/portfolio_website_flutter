@@ -213,6 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppLocalizations.of(context).translate('app.success'),
                         style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.w800,
+                            color: Colors.black,
                             fontFamily: AppStyles.FONT_SHRIKHAND),
                       )
                     ],

@@ -8,7 +8,7 @@ part of 'app_database.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Blog extends DataClass implements Insertable<Blog> {
-  final int id;
+  final String id;
   final String title;
   final String description;
   final String image;
@@ -30,7 +30,7 @@ class Blog extends DataClass implements Insertable<Blog> {
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Blog(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
       description: stringType
@@ -48,7 +48,7 @@ class Blog extends DataClass implements Insertable<Blog> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
+      map['id'] = Variable<String>(id);
     }
     if (!nullToAbsent || title != null) {
       map['title'] = Variable<String>(title);
@@ -95,7 +95,7 @@ class Blog extends DataClass implements Insertable<Blog> {
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Blog(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
       image: serializer.fromJson<String>(json['image']),
@@ -108,7 +108,7 @@ class Blog extends DataClass implements Insertable<Blog> {
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
       'image': serializer.toJson<String>(image),
@@ -174,7 +174,7 @@ class Blog extends DataClass implements Insertable<Blog> {
 }
 
 class BlogsCompanion extends UpdateCompanion<Blog> {
-  final Value<int> id;
+  final Value<String> id;
   final Value<String> title;
   final Value<String> description;
   final Value<String> image;
@@ -245,7 +245,7 @@ class BlogsCompanion extends UpdateCompanion<Blog> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      map['id'] = Variable<String>(id.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -288,12 +288,11 @@ class $BlogsTable extends Blogs with TableInfo<$BlogsTable, Blog> {
   final String _alias;
   $BlogsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedTextColumn _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn('id', $tableName, false);
   }
 
   final VerificationMeta _titleMeta = const VerificationMeta('title');
@@ -724,12 +723,11 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   final String _alias;
   $ProjectsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedTextColumn _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn('id', $tableName, false);
   }
 
   final VerificationMeta _nameMeta = const VerificationMeta('name');

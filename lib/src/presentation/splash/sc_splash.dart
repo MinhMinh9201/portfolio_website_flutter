@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import '../presentation.dart';
 
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void modelByTime() {
     DateTime time = DateTime.now();
-    if (time.hour < 6 && time.hour > 18) {
+    if (time.hour < 6 || time.hour > 18) {
       ThemeSwitcher.of(context).switchMode();
     }
   }
@@ -116,7 +117,6 @@ class _SplashScreenState extends State<SplashScreen> {
         uri = 'assets/backgrounds/morning3.png';
         break;
     }
-    print('------|Background: $uri|--------');
     return uri;
   }
 }

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio_website/src/configs/configs.dart';
 import 'package:portfolio_website/src/presentation/blog/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/blog/editer/bloc/bloc.dart';
+import 'package:portfolio_website/src/presentation/blog/editer/widget_blog_editer.dart';
 import 'package:portfolio_website/src/presentation/blog/widget_blog.dart';
+import 'package:portfolio_website/src/presentation/profile/bloc/bloc.dart';
 import 'package:portfolio_website/src/presentation/widgets/widget_circle_progress.dart';
 import 'package:portfolio_website/src/presentation/widgets/widget_error_state.dart';
 import 'package:portfolio_website/src/presentation/widgets/widget_response.dart';
@@ -16,13 +19,16 @@ class BlogScreen extends StatefulWidget {
 
 class _BlogScreenState extends State<BlogScreen> {
   String username;
+  ProfileLoaded stateProfile;
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       String routeName = ModalRoute.of(context).settings.name;
       username = routeName.substring(routeName.indexOf('@'));
-      BlocProvider.of<BlogBloc>(context).add(LoadBlog(username: username));
+      stateProfile = BlocProvider.of<ProfileBloc>(context).state;
+      BlocProvider.of<BlogBloc>(context).add(LoadBlog(
+          username: username, isCanEdit: stateProfile?.isCanEdit ?? false));
     });
   }
 
@@ -53,30 +59,82 @@ class _BlogScreenState extends State<BlogScreen> {
   }
 
   Widget _buildContent(BlogLoaded state) {
-    return Scaffold(
-      body: Container(
-        child: WidgetResponse(
-          large: Center(
-              child: FractionallySizedBox(
-            widthFactor: 0.5,
-            child: _buildBlogs(state.content),
-          )),
-          medium: Center(
-              child: FractionallySizedBox(
-            widthFactor: 0.65,
-            child: _buildBlogs(state.content),
-          )),
-          small: Center(
-              child: FractionallySizedBox(
-            widthFactor: 0.85,
-            child: _buildBlogs(state.content),
-          )),
-        ),
-      ),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, profileState) {
+        if (profileState is ProfileLoaded) {
+          if (!profileState.isEditing)
+            BlocProvider.of<BlogEditerBloc>(context).add(HideBlogEditer());
+          return Scaffold(
+            body: BlocBuilder<BlogEditerBloc, BlogEditerState>(
+              builder: (context, editerState) {
+                bool editing = editerState is BlogEditerLoaded ||
+                    editerState is BlogEditerLoading;
+                EdgeInsets padding = EdgeInsets.only(
+                    right: editing
+                        ? (WidgetResponse.isLargeScreen(context) ? 500 : 350)
+                        : 0);
+                return WidgetResponse(
+                  large: Stack(
+                    children: [
+                      Center(
+                          child: Padding(
+                        padding: padding,
+                        child: FractionallySizedBox(
+                          widthFactor: editing ? 0.65 : 0.5,
+                          child: _buildBlogs(
+                              state.content, profileState.isEditing),
+                        ),
+                      )),
+                      Positioned(
+                        child: WidgetBlogEditer(username: username),
+                        top: 0,
+                        right: 0,
+                      )
+                    ],
+                  ),
+                  medium: Stack(
+                    children: [
+                      Center(
+                          child: Padding(
+                        padding: padding,
+                        child: FractionallySizedBox(
+                          widthFactor: editing ? 0.8 : 0.65,
+                          child: _buildBlogs(
+                              state.content, profileState.isEditing),
+                        ),
+                      )),
+                      Positioned(
+                        child: WidgetBlogEditer(username: username),
+                        top: 0,
+                        right: 0,
+                      )
+                    ],
+                  ),
+                  small: Center(
+                      child: FractionallySizedBox(
+                    widthFactor: 0.85,
+                    child: _buildBlogs(state.content, profileState.isEditing),
+                  )),
+                );
+              },
+            ),
+          );
+        } else
+          return Container();
+      },
     );
   }
 
-  Widget _buildBlogs(List<Blog> blogs) {
+  FloatingActionButton _buildAddAction() {
+    return FloatingActionButton(
+      shape: CircleBorder(),
+      onPressed: () {},
+      elevation: 6,
+      child: Icon(Icons.add),
+    );
+  }
+
+  Widget _buildBlogs(List<Blog> blogs, bool isEditing) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
@@ -93,8 +151,13 @@ class _BlogScreenState extends State<BlogScreen> {
                       isTop: index == 0,
                       isBottom: blogs.length - 1 == index,
                       action: () {
-                        Html.window
-                            .open(blogs[index].url, "${blogs[index].title}");
+                        if (isEditing ?? false) {
+                          BlocProvider.of<BlogEditerBloc>(context)
+                              .add(LoadBlogEditer(blog: blogs[index]));
+                        } else {
+                          Html.window
+                              .open(blogs[index].url, "${blogs[index].title}");
+                        }
                       },
                     )),
             RaisedButton(

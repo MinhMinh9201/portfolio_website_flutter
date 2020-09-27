@@ -38,5 +38,16 @@
     "about.social.title" : "Chỉnh sửa các liên kết tới mạng xã hội của bạn",
     "about.social.tutorial" : "Hướng dẫn",
     "about.social.example" : "Ví dụ",
-    "about.social.help" : "Thêm một liên kết bằng cách ấn vào button (+) và nhập tiêu đề... \nChúng ta kết thúc chỉnh sửa với nút \"Save\"."
+    "about.social.help" : "Thêm một liên kết bằng cách ấn vào button (+) và nhập tiêu đề... \nChúng ta kết thúc chỉnh sửa với nút \"Save\".",
+
+    "blog.save" : "Lưu",
+    "blog.editer" : "Chỉnh sửa bài viết",
+    "blog.title.hint" : "Nhập tiêu đề bài viết ...",
+    "blog.url.hint" : "Đường dẫn đến bài viết ...",
+    "blog.description.hint" : "Mô tả ngắn bài viết ...",
+    
+    "project.save" : "Lưu",
+    "project.editer" : "Chỉnh sửa dự án",
+    "project.title.hint" : "Nhập tiêu đề dự án ...",
+    "project.description.hint" : "Mô tả ngắn dự ..."
 }
